@@ -39,7 +39,7 @@ Para executar este projeto em sua máquina, siga os passos abaixo.
 ###Passos
     Clone o repositório:
     Bash
-git clone https://github.com/[seu-usuario]/[nome-do-repositorio].git
+git clone https://github.com/NandoInability/Gerenciador-Nuzlock
 Navegue até a pasta do projeto:
 Bash
 cd GerenciadorNuzlocke
