@@ -15,13 +15,13 @@ public class ParLink {
     @JoinColumn(name = "run_id")
     private RunsSL run;
 
-    @ManyToOne
-    @JoinColumn(name = "pkm1_id")
-    private Pokemon pkm1;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "captura_jogador1_id")
+    private PKMCapturado pkm1;
 
-    @ManyToOne
-    @JoinColumn(name = "pkm2_id")
-    private Pokemon pkm2;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "captura_jogador2_id")
+    private PKMCapturado pkm2;
 
     @Column(name = "local_captura")
     private String localCaptura;

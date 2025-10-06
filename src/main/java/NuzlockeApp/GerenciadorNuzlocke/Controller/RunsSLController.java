@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -36,5 +37,17 @@ public class RunsSLController {
         // Dados Login
         RunsSL runs = runsSLService.save(run);
         return new ResponseEntity<>(runs, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/runs/novo")
+    public String mostrarFormularioDeNovaRun(Model model) {
+        model.addAttribute("run", new RunsSL());
+        return "form-run";
+    }
+
+    @PostMapping("/runs")
+    public String salvarNovaRun(@ModelAttribute("run") RunsSL run) {
+        runsSLService.save(run);
+        return "redirect:/";
     }
 }

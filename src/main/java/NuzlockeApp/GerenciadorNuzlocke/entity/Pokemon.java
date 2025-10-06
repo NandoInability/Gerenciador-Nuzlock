@@ -28,4 +28,13 @@ public class Pokemon {
     
     @Column(name = "sprite")
     private String sprite;
+
+    private String evolChain;
+
+    public String getSprite() {
+        return sprite;
+    }
+    public void setSprite(String sprite) {
+        this.sprite = sprite;
+    }
 }

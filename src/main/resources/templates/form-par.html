@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Par</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container py-5">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header text-center">
+                <h2 class="fw-bold">Adicionar Novo Par de Pokémon</h2>
+            </div>
+            <div class="card-body p-4">
+                <form th:action="${par.id == null} ? @{/runs/{runId}/pares(runId=${runId})} : @{/runs/{runId}/pares/{parId}/editar(runId=${runId}, parId=${par.id})}"
+                      th:object="${par}"
+                      method="post">
+
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="mb-3">
+                        <label for="localCaptura" class="form-label">Local de Captura:</label>
+                        <input type="text" class="form-control" th:field="*{localCaptura}" required>
+                    </div>
+
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-2 fs-6">Jogador 1</legend>
+                        <div class="mb-3">
+                            <label class="form-label">Espécie de Pokémon:</label>
+                            <select class="form-select starter-p1-option starter-option" id="starter-p1-opt1" th:field="*{pkm1.especie}" required>
+                                <option value="">Selecione um Pokémon</option>
+                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Apelido:</label>
+                            <input type="text" class="form-control" th:field="*{pkm1.apelido}">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-3 mb-4">
+                        <legend class="float-none w-auto px-2 fs-6">Jogador 2</legend>
+                        <div class="mb-3">
+                            <label class="form-label">Espécie de Pokémon:</label>
+                            <select class="form-select starter-p1-option starter-option" id="starter-p2-opt2" th:field="*{pkm1.especie}" required>
+                                <option value="">Selecione um Pokémon</option>
+                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Apelido:</label>
+                            <input type="text" class="form-control" th:field="*{pkm2.apelido}">
+                        </div>
+                    </fieldset>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a th:href="@{/runs/{id}(id=${runId})}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar Par</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    // PASSO 1: Pega a lista de Pokémon disponíveis que o Controller enviou
+    // e a transforma em uma variável JavaScript.
+    const availablePokemon = /*[[${pokemons}]]*/ [];
+
+    // Pega todos os elementos importantes da página
+    const allDropdowns = document.querySelectorAll('.starter-option');
+    const saveRunBtn = document.getElementById('save-run-btn'); // Supondo que o botão de salvar a run tenha este ID
+
+    // Função principal que atualiza todos os dropdowns
+    function updateDropdowns() {
+        const selectedChains = new Set();
+
+        // 1. Descobre quais famílias de evolução já foram selecionadas
+        allDropdowns.forEach(dropdown => {
+            const selectedId = dropdown.value;
+            if (selectedId) {
+                const selectedPokemon = availablePokemon.find(p => p.id == selectedId);
+                if (selectedPokemon && selectedPokemon.evolChain) {
+                    selectedChains.add(selectedPokemon.evolChain);
+                }
+            }
+        });
+
+        // 2. Percorre todos os dropdowns novamente para esconder/mostrar as opções
+        allDropdowns.forEach(dropdown => {
+            const currentSelectionId = dropdown.value; // O valor que JÁ ESTÁ selecionado neste dropdown
+
+            for (const option of dropdown.options) {
+                if (option.value) { // Ignora a primeira opção "Selecione um Pokémon"
+                    const pokemonId = option.value;
+                    const pokemon = availablePokemon.find(p => p.id == pokemonId);
+
+                    if (pokemon && pokemon.evolChain) {
+                        // A opção deve ser escondida se:
+                        // - Sua família de evolução está na lista de "proibidas"
+                        // E
+                        // - Ela NÃO é a opção que já está selecionada neste dropdown específico
+                        if (selectedChains.has(pokemon.evolChain) && pokemonId !== currentSelectionId) {
+                            option.style.display = 'none'; // Esconde a opção
+                        } else {
+                            option.style.display = ''; // Mostra a opção
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 3. Adiciona um "ouvinte" para CADA dropdown.
+    // Toda vez que um deles for alterado, a função updateDropdowns() será chamada.
+    allDropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', updateDropdowns);
+    });
+
+    // (O código dos botões de sorteio pode ser adicionado aqui também se você quiser mantê-los)
+
+    /*]]>*/
+</script>
+</body>
+</html>

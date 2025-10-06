@@ -26,4 +26,8 @@ public class ParLinkService {
     public ParLink findById(Long id) {
         return parLinkRepository.findById(id).orElse(null);
     }
+
+    public void deleteById(Long id) {
+        parLinkRepository.deleteById(id);
+    }
 }

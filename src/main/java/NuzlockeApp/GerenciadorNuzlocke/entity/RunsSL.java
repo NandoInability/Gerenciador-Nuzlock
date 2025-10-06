@@ -13,11 +13,18 @@ public class RunsSL {
     private Long id;
 
     @Column(name = "nome_jogo")
-    private String nomejogo;
+    private String nomeDaRun;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "jogo_id")
+    private Jogo jogo;
 
     @Column(name = "status")
-    private String status;
+    private String status = "Em andamento";
 
-    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = true)
+    private String jogador1;
+    private String jogador2;
+
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ParLink> links;
 }

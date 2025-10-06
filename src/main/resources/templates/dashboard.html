@@ -23,13 +23,24 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${run.nomeDaRun}">Nome da Run Placeholder</h5>
+                    <p class="card-subtitle mb-2 text-muted" th:text="${run.jogo.nome}">Nome do Jogo</p>
                     <p class="card-text text-muted" th:text="${run.jogador1} + ' & ' + ${run.jogador2}">
                         Jogador 1 & Jogador 2
                     </p>
                 </div>
                 <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
-                    <a th:href="@{/runs/{id}(id=${run.id})}" class="btn btn-outline-secondary">Ver Detalhes</a>
-                    <span class="badge rounded-pill bg-success">Em Andamento</span>
+                    <a th:href="@{/runs/{id}(id=${run.id})}" class="btn btn-outline-secondary btn-sm">Ver Detalhes</a>
+
+                    <div>
+                        <a th:href="@{/runs/{id}/editar(id=${run.id})}" class="btn btn-outline-primary btn-sm">Editar</a>
+
+                        <form th:action="@{/runs/{id}/deletar(id=${run.id})}" method="post" class="d-inline ms-1">
+                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                    onclick="return confirm('Tem certeza que deseja deletar esta run e todos os seus pares?');">
+                                Deletar
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

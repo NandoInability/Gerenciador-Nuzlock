@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Run</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5 fw-bold" th:text="${run.nomeDaRun}">Nome da Run</h1>
+            <p class="lead" th:text="${run.jogo.nome}">Nome do Jogo</p>
+            <p class="lead text-muted" th:text="${run.jogador1} + ' & ' + ${run.jogador2}">Jogadores</p>
+        </div>
+        <a href="/" class="btn btn-outline-secondary">← Voltar para o Dashboard</a>
+    </div>
+
+    <hr class="mb-4">
+
+    <div class="text-end mb-4">
+        <a th:href="@{/runs/{id}/pares/novo(id=${run.id})}" class="btn btn-primary btn-lg">+ Adicionar Novo Par</a>
+    </div>
+
+    <h2 class="mb-3">Pares Capturados</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+
+        <div th:each="par : ${run.links}" class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-bold" th-text="'Capturado em: ' + ${par.localCaptura}">
+                    Local da Captura
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 border-end"> <img th:src="${par.pkm1.especie.sprite}" alt="Sprite do Pokémon" width="96" height="96">
+
+                            <h6 class="card-title text-muted" th:text="${run.jogador1}">Jogador 1</h6>
+                            <p class="mb-0 fs-5 fw-bold" th:text="${par.pkm1.apelido}">Apelido P1</p>
+                            <small class="text-muted" th:text="${par.pkm1.especie.name}">Espécie P1</small>
+
+                            <div class="mt-2">
+                                <span class="badge" th:classappend="${par.pkm1.status == 'Vivo'} ? 'bg-success' : 'bg-danger'" th:text="${par.pkm1.status}">Status</span>
+                                <form th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm1.id})}" method="post" class="d-inline ms-2" th:if="${par.pkm1.status == 'Vivo'}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Morto</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <img th:src="${par.pkm2.especie.sprite}" alt="Sprite do Pokémon" width="96" height="96">
+                            <h6 class="card-title text-muted" th:text="${run.jogador2}">Jogador 2</h6>
+                            <p class="mb-0 fs-5 fw-bold" th:text="${par.pkm2.apelido}">Apelido P2</p>
+                            <small class="text-muted" th:text="${par.pkm2.especie.name}">Espécie P2</small>
+
+                            <div class="mt-2">
+                                <span class="badge" th:classappend="${par.pkm2.status == 'Vivo'} ? 'bg-success' : 'bg-danger'" th:text="${par.pkm2.status}">Status</span>
+                                <form th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm2.id})}" method="post" class="d-inline ms-2" th:if="${par.pkm2.status == 'Vivo'}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Morto</button>
+                                </form>
+                                <form th:action="@{/runs/{runId}/pares/{parId}/deletar(runId=${run.id}, parId=${par.id})}" method="post" class="d-inline ms-1">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Tem certeza que deseja deletar este par?');">
+                                        Deletar
+                                    </button>
+                                </form>
+                                <a th:href="@{/runs/{runId}/pares/{parId}/editar(runId=${run.id}, parId=${par.id})}" class="btn btn-outline-secondary btn-sm">Editar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${run.links.isEmpty()}" class="text-center py-5">
+        <div class="card p-4">
+            <p class="h5 text-muted">Nenhum par de Pokémon foi adicionado ainda.</p>
+        </div>
+    </div>
+</main>
+</body>
+</html>
