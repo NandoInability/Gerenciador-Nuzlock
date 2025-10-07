@@ -17,7 +17,9 @@
                 <form th:action="${par.id == null} ? @{/runs/{runId}/pares(runId=${runId})} : @{/runs/{runId}/pares/{parId}/editar(runId=${runId}, parId=${par.id})}"
                       th:object="${par}"
                       method="post">
-
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <p th:text="${errorMessage}"></p>
+                    </div>
                     <input type="hidden" th:field="*{id}" />
 
                     <div class="mb-3">
@@ -40,11 +42,12 @@
                         </div>
                     </fieldset>
 
+
                     <fieldset class="border p-3 mb-4">
                         <legend class="float-none w-auto px-2 fs-6">Jogador 2</legend>
                         <div class="mb-3">
                             <label class="form-label">Espécie de Pokémon:</label>
-                            <select class="form-select starter-p1-option starter-option" id="starter-p2-opt2" th:field="*{pkm1.especie}" required>
+                            <select class="form-select starter-p1-option starter-option" id="starter-p2-opt2" th:field="*{pkm2.especie}"** required>
                                 <option value="">Selecione um Pokémon</option>
                                 <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
                             </select>
@@ -54,6 +57,8 @@
                             <input type="text" class="form-control" th:field="*{pkm2.apelido}">
                         </div>
                     </fieldset>
+
+
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a th:href="@{/runs/{id}(id=${runId})}" class="btn btn-secondary">Cancelar</a>
