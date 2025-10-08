@@ -4,76 +4,46 @@ import NuzlockeApp.GerenciadorNuzlocke.entity.Pokemon;
 import NuzlockeApp.GerenciadorNuzlocke.entity.Jogo;
 import NuzlockeApp.GerenciadorNuzlocke.repository.JogoRepository;
 import NuzlockeApp.GerenciadorNuzlocke.repository.RepdePkm;
+import NuzlockeApp.GerenciadorNuzlocke.repository.RepPKMCapturado;
+import NuzlockeApp.GerenciadorNuzlocke.service.PokeApiService; // Importe o novo serviço
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(RepdePkm repository, JogoRepository jogoRepository) {
+    CommandLineRunner initDatabase(RepdePkm pokemonRepository,
+                                   JogoRepository jogoRepository,
+                                   RepPKMCapturado repPKMCapturado,
+                                   PokeApiService pokeApiService) { // <--- Injete o PokeApiService
         return args -> {
-            repository.deleteAll();
-                Pokemon bulbasaur = new Pokemon();
-                bulbasaur.setName("Bulbasaur");
-                bulbasaur.setPrimaryType("Grass");
-                bulbasaur.setSecundaryType("Poison");
-                bulbasaur.setGeneration(1);
-                bulbasaur.setPkdexNumber(1);
-                bulbasaur.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png");
-                bulbasaur.setEvolChain("Bulbasaur");
-                repository.save(bulbasaur);
+            // Lógica para carregar Pokemons apenas se não existirem
+            if (pokemonRepository.count() == 0) {
+                System.out.println("Banco de dados 'pokemons' vazio. Carregando Pokémons da PokeAPI...");
 
-                Pokemon ivysaur = new Pokemon();
-                ivysaur.setName("Ivysaur");
-                ivysaur.setPrimaryType("Grass");
-                ivysaur.setSecundaryType("Poison");
-                ivysaur.setGeneration(1);
-                ivysaur.setPkdexNumber(2);
-                ivysaur.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png");
-                ivysaur.setEvolChain("Bulbasaur");
-                repository.save(ivysaur);
+                // Define quantos Pokémons você quer carregar. Ex: 1025 para até a Geração 9 (excluindo formas regionais/mega)
+                List<Pokemon> allPokemons = pokeApiService.fetchAndMapPokemons(1025);
 
-                Pokemon charmander = new Pokemon();
-                charmander.setName("Charmander");
-                charmander.setPrimaryType("Fire");
-                charmander.setGeneration(1);
-                charmander.setPkdexNumber(4);
-                charmander.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png");
-                charmander.setEvolChain("Charmander");
-                repository.save(charmander);
+                if (!allPokemons.isEmpty()) {
+                    pokemonRepository.saveAll(allPokemons);
+                    System.out.println("Pokémons da PokeAPI carregados com sucesso! Total: " + allPokemons.size());
+                } else {
+                    System.err.println("Nenhum Pokémon foi carregado da PokeAPI.");
+                }
 
-                Pokemon squirtle = new Pokemon();
-                squirtle.setName("Squirtle");
-                squirtle.setPrimaryType("Water");
-                squirtle.setGeneration(1);
-                squirtle.setPkdexNumber(7);
-                squirtle.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png");
-                squirtle.setEvolChain("Squirtle");
-                repository.save(squirtle);
+            } else {
+                System.out.println("Tabela 'pokemons' já contém dados. Pulando carregamento inicial de Pokémons.");
+            }
 
-                Pokemon cartepie = new Pokemon();
-                cartepie.setName("Cartepie");
-                cartepie.setPrimaryType("Bug");
-                cartepie.setGeneration(1);
-                cartepie.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png");
-                cartepie.setEvolChain("Cartepie");
-                repository.save(cartepie);
-
-            Pokemon weedle = new Pokemon();
-            weedle.setName("Weedle");
-            weedle.setPrimaryType("Bug");
-            weedle.setSecundaryType("Poison");
-            weedle.setGeneration(1);
-            weedle.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png");
-            weedle.setEvolChain("Weedle");
-            repository.save(weedle);
-
-
-                System.out.println("Dados iniciais carregados com sucesso!");
-
+            // ... (Seus outros códigos para carregar Jogos e PKMs Capturados) ...
             if (jogoRepository.count() == 0) {
+                System.out.println("Banco de dados 'jogos' vazio. Carregando Jogos iniciais...");
+
                 Jogo Black2 = new Jogo();
                 Black2.setNome("Pokemon Black 2");
                 Black2.setGeracao(5);
@@ -88,6 +58,16 @@ public class DataInitializer {
                 heartGold.setNome("Pokémon HeartGold");
                 heartGold.setGeracao(4);
                 jogoRepository.save(heartGold);
+                System.out.println("Jogos iniciais carregados com sucesso!");
+            } else {
+                System.out.println("Tabela 'jogos' já contém dados. Pulando carregamento inicial de Jogos.");
+            }
+
+            if (repPKMCapturado.count() == 0) {
+                System.out.println("Tabela 'pkmcapturado' vazia. Carregando dados de PKMs capturados (se houver dependências)...");
+                System.out.println("Dados de PKMs capturados carregados (se implementado e necessário).");
+            } else {
+                System.out.println("Tabela 'pkmcapturado' já contém dados. Pulando carregamento inicial de PKMs capturados.");
             }
         };
     }

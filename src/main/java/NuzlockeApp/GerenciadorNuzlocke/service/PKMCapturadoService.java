@@ -45,4 +45,8 @@ public class PKMCapturadoService {
             }
         }
     }
-}}
+}
+    public PKMCapturado save(PKMCapturado pkmCapturado) {
+        return rep.save(pkmCapturado);
+    }
+}

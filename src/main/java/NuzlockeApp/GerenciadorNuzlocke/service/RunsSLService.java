@@ -18,6 +18,8 @@ public class RunsSLService {
     private PokemonService pokemonService;
     @Autowired
     private ParLinkService parLinkService;
+    @Autowired
+    private PKMCapturadoService pkmCapturadoService;
 
     public RunsSL save(RunsSL run) {
         return runsRepository.save(run);
@@ -31,27 +33,39 @@ public class RunsSLService {
         return runsRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Long id) { runsRepository.deleteById(id); }
+    public void deleteById(Long id) {
+        RunsSL run = runsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Run não encontrada com ID: " + id));
+        runsRepository.deleteById(id);
+    }
 
     @Transactional
     public void criarNovaRunComIniciais(RunsSL run, Long starterP1Id, Long starterP2Id) {
-        RunsSL runSalva = runsRepository.save(run);
-            Pokemon especieP1 = pokemonService.findById(starterP1Id);
-            Pokemon especieP2 = pokemonService.findById(starterP2Id);
+        RunsSL runSalva = runsRepository.save(run); // Salva a run primeiro para ter um ID
 
-            PKMCapturado capturadoP1 = new PKMCapturado();
-            capturadoP1.setEspecie(especieP1);
-            capturadoP1.setApelido(especieP1.getName());
+        Pokemon especieP1 = pokemonService.findById(starterP1Id);
+        Pokemon especieP2 = pokemonService.findById(starterP2Id);
 
-            PKMCapturado capturadoP2 = new PKMCapturado();
-            capturadoP2.setEspecie(especieP2);
-            capturadoP2.setApelido(especieP2.getName());
+        if (especieP1 == null || especieP2 == null) {
+            throw new IllegalArgumentException("Pokémon inicial não encontrado.");
+        }
 
-            ParLink primeiroPar = new ParLink();
-            primeiroPar.setRun(runSalva);
-            primeiroPar.setLocalCaptura("Inicial");
-            primeiroPar.setPkm1(capturadoP1);
-            primeiroPar.setPkm2(capturadoP2);
-            parLinkService.save(primeiroPar);
+        PKMCapturado capturadoP1 = new PKMCapturado();
+        capturadoP1.setEspecie(especieP1);
+        capturadoP1.setApelido(especieP1.getName());
+        capturadoP1.setStatus("Vivo"); // Adicione o status inicial
+        pkmCapturadoService.save(capturadoP1); // SALVA o PKMCapturado
+
+        PKMCapturado capturadoP2 = new PKMCapturado();
+        capturadoP2.setEspecie(especieP2);
+        capturadoP2.setApelido(especieP2.getName());
+        capturadoP2.setStatus("Vivo"); // Adicione o status inicial
+        pkmCapturadoService.save(capturadoP2); // SALVA o PKMCapturado
+
+        ParLink primeiroPar = new ParLink();
+        primeiroPar.setRun(runSalva);
+        primeiroPar.setLocalCaptura("Pokemon Inicial");
+        primeiroPar.setPkm1(capturadoP1);
+        primeiroPar.setPkm2(capturadoP2);
+        parLinkService.save(primeiroPar); // SALVA o ParLink
     }
 }

@@ -29,7 +29,7 @@
 
         <div th:each="par : ${run.links}" class="col">
             <div class="card shadow-sm h-100">
-                <div class="card-header fw-bold" th-text="'Capturado em: ' + ${par.localCaptura}">
+                <div class="card-header fw-bold" th:text="'Capturado em: ' + ${par.localCaptura}">
                     Local da Captura
                 </div>
                 <div class="card-body">
@@ -39,6 +39,11 @@
                             <h6 class="card-title text-muted" th:text="${run.jogador1}">Jogador 1</h6>
                             <p class="mb-0 fs-5 fw-bold" th:text="${par.pkm1.apelido}">Apelido P1</p>
                             <small class="text-muted" th:text="${par.pkm1.especie.name}">Espécie P1</small>
+                            <div class="d-flex flex-wrap gap-1 mt-1">
+                                <span class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm1.especie.primaryType)}" th:text="${par.pkm1.especie.primaryType}"></span>
+                                <span th:if="${par.pkm1.especie.secundaryType != null and par.pkm1.especie.secundaryType != ''}" class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm1.especie.secundaryType)}" th:text="${par.pkm1.especie.secundaryType}"></span>
+                            </div>
+
 
                             <div class="mt-2">
                                 <span class="badge" th:classappend="${par.pkm1.status == 'Vivo'} ? 'bg-success' : 'bg-danger'" th:text="${par.pkm1.status}">Status</span>
@@ -53,6 +58,10 @@
                             <h6 class="card-title text-muted" th:text="${run.jogador2}">Jogador 2</h6>
                             <p class="mb-0 fs-5 fw-bold" th:text="${par.pkm2.apelido}">Apelido P2</p>
                             <small class="text-muted" th:text="${par.pkm2.especie.name}">Espécie P2</small>
+                            <div class="d-flex flex-wrap gap-1 mt-1">
+                                <span class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm2.especie.primaryType)}" th:text="${par.pkm2.especie.primaryType}"></span>
+                                <span th:if="${par.pkm2.especie.secundaryType != null and par.pkm2.especie.secundaryType != ''}" class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm2.especie.secundaryType)}" th:text="${par.pkm2.especie.secundaryType}"></span>
+                            </div>
 
                             <div class="mt-2">
                                 <span class="badge" th:classappend="${par.pkm2.status == 'Vivo'} ? 'bg-success' : 'bg-danger'" th:text="${par.pkm2.status}">Status</span>
@@ -60,6 +69,7 @@
                                     <button type="submit" class="btn btn-danger btn-sm">Morto</button>
                                 </form>
                                 <form th:action="@{/runs/{runId}/pares/{parId}/deletar(runId=${run.id}, parId=${par.id})}" method="post" class="d-inline ms-1">
+                                    <input type="hidden" name="_method" value="delete"/>
                                     <button type="submit" class="btn btn-outline-danger btn-sm"
                                             onclick="return confirm('Tem certeza que deseja deletar este par?');">
                                         Deletar
