@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,112 +6,488 @@
     <title>Novo Par</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #1a1a2e;
+            background-image: radial-gradient(ellipse at 20% 20%, #16213e 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 80%, #0f3460 0%, transparent 60%);
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .page-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.85rem;
+            color: #f0c040;
+            text-shadow: 2px 2px 0 #b8860b, 4px 4px 0 #8b6914;
+            letter-spacing: 1px;
+        }
+
+        .main-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border-radius: 18px 18px 0 0;
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #ffd60a;
+        }
+
+        .player-fieldset {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 14px;
+        }
+
+        .player-fieldset legend {
+            color: #f0c040;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: #1a1a2e;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .form-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .form-control:focus {
+            background: rgba(255,255,255,0.1);
+            border-color: #f0c040;
+            color: #fff;
+            box-shadow: 0 0 0 3px rgba(240,192,64,0.15);
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.3); }
+
+        /* ── POKEMON PICKER ── */
+        .pkm-picker-wrapper { position: relative; }
+
+        .pkm-search-input {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 0.6rem 1rem 0.6rem 2.6rem;
+            width: 100%;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .pkm-search-input:focus { border-color: #f0c040; }
+        .pkm-search-input::placeholder { color: rgba(255,255,255,0.3); }
+
+        .pkm-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .pkm-selected-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(240,192,64,0.12);
+            border: 1px solid rgba(240,192,64,0.4);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 0.4rem 0.8rem;
+            min-height: 44px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pkm-selected-display:hover { background: rgba(240,192,64,0.18); }
+        .pkm-selected-display img { width: 36px; height: 36px; image-rendering: pixelated; }
+        .pkm-selected-display .selected-name {
+            color: #f0c040;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .pkm-selected-display .placeholder-text {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+        .pkm-selected-display .clear-btn {
+            margin-left: auto;
+            background: rgba(230,57,70,0.3);
+            border: none;
+            color: #e63946;
+            border-radius: 50%;
+            width: 22px; height: 22px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .pkm-selected-display .clear-btn:hover { background: rgba(230,57,70,0.6); }
+
+        .pkm-dropdown {
+            display: none;
+            position: absolute;
+            left: 0; right: 0;
+            z-index: 1000;
+            background: #16213e;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-top: none;
+            border-radius: 0 0 14px 14px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: #f0c040 transparent;
+        }
+        .pkm-dropdown.open { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 6px; }
+
+        .pkm-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 4px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.04);
+            transition: all 0.15s;
+            text-align: center;
+        }
+        .pkm-card:hover {
+            background: rgba(240,192,64,0.15);
+            border-color: rgba(240,192,64,0.5);
+            transform: scale(1.05);
+        }
+        .pkm-card.selected {
+            background: rgba(240,192,64,0.2);
+            border-color: #f0c040;
+        }
+        .pkm-card.hidden { display: none; }
+        .pkm-card.disabled {
+            opacity: 0.25;
+            pointer-events: none;
+        }
+        .pkm-card img {
+            width: 48px; height: 48px;
+            image-rendering: pixelated;
+        }
+        .pkm-card span {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 2px;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 68px;
+        }
+        .pkm-card.selected span { color: #f0c040; }
+
+        /* hidden real select (mantém compatibilidade com Thymeleaf) */
+        .pkm-real-select { display: none !important; }
+
+        .btn-salvar {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border: none;
+            color: #fff;
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 0.65rem 2rem;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(230,57,70,0.4);
+        }
+        .btn-salvar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230,57,70,0.5);
+            color: #fff;
+        }
+
+        .btn-cancelar {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            padding: 0.65rem 2rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-cancelar:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+
+        .no-results {
+            display: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 20px;
+            grid-column: 1 / -1;
+        }
+    </style>
 </head>
 <body>
 <main class="container py-5">
-    <div class="col-md-8 mx-auto">
-        <div class="card shadow-sm">
-            <div class="card-header text-center">
-                <h2 class="fw-bold" th:text="${par.id == null} ? 'Adicionar Novo Par de Pokémon' : 'Editar Par de Pokémon'"></h2>
+    <div class="col-md-9 col-lg-7 mx-auto">
+        <div class="main-card shadow-lg">
+            <div class="card-header-custom">
+                <h2 class="page-title mb-0"
+                    th:text="${par.id == null} ? 'Novo Par' : 'Editar Par'"></h2>
             </div>
-            <div class="card-body p-4">
+            <div class="p-4">
                 <form th:action="${par.id == null} ? @{/runs/{runId}/pares(runId=${runId})} : @{/runs/{runId}/pares/{parId}/editar(runId=${runId}, parId=${par.id})}"
                       th:object="${par}"
                       method="post">
-                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-                        <p th:text="${errorMessage}"></p>
+
+                    <div th:if="${errorMessage}" class="alert alert-danger rounded-3" role="alert">
+                        <span th:text="${errorMessage}"></span>
                     </div>
+
                     <input type="hidden" th:field="*{id}" />
 
-                    <div class="mb-3">
-                        <label for="localCaptura" class="form-label">Local de Captura:</label>
-                        <input type="text" class="form-control" th:field="*{localCaptura}" required>
+                    <div class="mb-4">
+                        <label class="form-label">📍 Local de Captura</label>
+                        <input type="text" class="form-control" th:field="*{localCaptura}"
+                               placeholder="Ex: Rota 1, Caverna Escura..." required>
                     </div>
 
-                    <fieldset class="border p-3 mb-3">
-                        <legend class="float-none w-auto px-2 fs-6">Jogador 1</legend>
+                    <!-- JOGADOR 1 -->
+                    <fieldset class="player-fieldset border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">🎮 Jogador 1</legend>
+
                         <div class="mb-3">
-                            <label class="form-label">Espécie de Pokémon:</label>
-                            <select class="form-select starter-p1-option starter-option" id="starter-p1-opt1" th:field="*{pkm1.especie}" required>
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                            <label class="form-label">Espécie de Pokémon</label>
+
+                            <!-- Hidden real select para Thymeleaf -->
+                            <select class="pkm-real-select starter-option"
+                                    id="pkm1-select"
+                                    th:field="*{pkm1.especie}" required>
+                                <option value="">Selecione</option>
+                                <option th:each="p : ${pokemons}"
+                                        th:value="${p.id}"
+                                        th:text="${p.name}"
+                                        th:attr="data-sprite=${p.sprite}, data-chain=${p.evolChain}">
+                                </option>
                             </select>
+
+                            <!-- Picker visual -->
+                            <div class="pkm-picker-wrapper" data-target="pkm1-select">
+                                <div class="position-relative">
+                                    <span class="pkm-search-icon">🔍</span>
+                                    <input type="text" class="pkm-search-input"
+                                           placeholder="Buscar Pokémon..."
+                                           autocomplete="off">
+                                </div>
+                                <div class="pkm-selected-display">
+                                    <span class="placeholder-text">Nenhum selecionado</span>
+                                </div>
+                                <div class="pkm-dropdown">
+                                    <span class="no-results">Nenhum Pokémon encontrado</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Apelido:</label>
-                            <input type="text" class="form-control" th:field="*{pkm1.apelido}">
+
+                        <div class="mb-2">
+                            <label class="form-label">Apelido</label>
+                            <input type="text" class="form-control" th:field="*{pkm1.apelido}"
+                                   placeholder="Apelido do Pokémon">
                         </div>
                     </fieldset>
 
+                    <!-- JOGADOR 2 -->
+                    <fieldset class="player-fieldset border p-3 mb-4">
+                        <legend class="float-none w-auto px-2">🎮 Jogador 2</legend>
 
-                    <fieldset class="border p-3 mb-4">
-                        <legend class="float-none w-auto px-2 fs-6">Jogador 2</legend>
                         <div class="mb-3">
-                            <label class="form-label">Espécie de Pokémon:</label>
-                            <select class="form-select starter-p1-option starter-option" id="starter-p2-opt2" th:field="*{pkm2.especie}" required>
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                            <label class="form-label">Espécie de Pokémon</label>
+
+                            <select class="pkm-real-select starter-option"
+                                    id="pkm2-select"
+                                    th:field="*{pkm2.especie}" required>
+                                <option value="">Selecione</option>
+                                <option th:each="p : ${pokemons}"
+                                        th:value="${p.id}"
+                                        th:text="${p.name}"
+                                        th:attr="data-sprite=${p.sprite}, data-chain=${p.evolChain}">
+                                </option>
                             </select>
+
+                            <div class="pkm-picker-wrapper" data-target="pkm2-select">
+                                <div class="position-relative">
+                                    <span class="pkm-search-icon">🔍</span>
+                                    <input type="text" class="pkm-search-input"
+                                           placeholder="Buscar Pokémon..."
+                                           autocomplete="off">
+                                </div>
+                                <div class="pkm-selected-display">
+                                    <span class="placeholder-text">Nenhum selecionado</span>
+                                </div>
+                                <div class="pkm-dropdown">
+                                    <span class="no-results">Nenhum Pokémon encontrado</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Apelido:</label>
-                            <input type="text" class="form-control" th:field="*{pkm2.apelido}">
+
+                        <div class="mb-2">
+                            <label class="form-label">Apelido</label>
+                            <input type="text" class="form-control" th:field="*{pkm2.apelido}"
+                                   placeholder="Apelido do Pokémon">
                         </div>
                     </fieldset>
 
-
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a th:href="@{/runs/{id}(id=${runId})}" class="btn btn-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-primary">Salvar Par</button>
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a th:href="@{/runs/{id}(id=${runId})}" class="btn-cancelar btn">Cancelar</a>
+                        <button type="submit" class="btn-salvar btn">Salvar Par</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </main>
+
 <script th:inline="javascript">
     const availablePokemon = /*[[${pokemons}]]*/ [];
 
-    const allDropdowns = document.querySelectorAll('.starter-option');
-    const saveRunBtn = document.getElementById('save-run-btn');
+    // ── Inicializa cada picker ──
+    document.querySelectorAll('.pkm-picker-wrapper').forEach(wrapper => {
+        const targetId   = wrapper.dataset.target;
+        const realSelect = document.getElementById(targetId);
+        const searchInput   = wrapper.querySelector('.pkm-search-input');
+        const dropdown      = wrapper.querySelector('.pkm-dropdown');
+        const selectedDisplay = wrapper.querySelector('.pkm-selected-display');
+        const noResults     = wrapper.querySelector('.no-results');
 
-    function updateDropdowns() {
-        const selectedChains = new Set();
+        // Popula o grid com os pokémons da lista real do Thymeleaf
+        const options = [...realSelect.options].filter(o => o.value);
+        options.forEach(opt => {
+            const card = document.createElement('div');
+            card.className = 'pkm-card';
+            card.dataset.id    = opt.value;
+            card.dataset.name  = opt.text.toLowerCase();
+            card.dataset.chain = opt.dataset.chain || '';
+            const sprite = opt.dataset.sprite || '';
+            card.innerHTML = `<img src="${sprite}" alt="${opt.text}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                              <span>${opt.text}</span>`;
+            card.addEventListener('click', () => selectPokemon(wrapper, realSelect, card, opt.value, opt.text, sprite));
+            dropdown.appendChild(card);
+        });
 
-        allDropdowns.forEach(dropdown => {
-            const selectedId = dropdown.value;
-            if (selectedId) {
-                const selectedPokemon = availablePokemon.find(p => p.id == selectedId);
-                if (selectedPokemon && selectedPokemon.evolChain) {
-                    selectedChains.add(selectedPokemon.evolChain);
-                }
+        // Busca
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.toLowerCase().trim();
+            let visible = 0;
+            dropdown.querySelectorAll('.pkm-card').forEach(card => {
+                const match = card.dataset.name.includes(q);
+                card.classList.toggle('hidden', !match);
+                if (match) visible++;
+            });
+            noResults.style.display = visible === 0 ? 'block' : 'none';
+        });
+
+        // Abre/fecha dropdown
+        searchInput.addEventListener('focus', () => {
+            dropdown.classList.add('open');
+            updateDisabled();
+        });
+        document.addEventListener('click', e => {
+            if (!wrapper.contains(e.target)) dropdown.classList.remove('open');
+        });
+        selectedDisplay.addEventListener('click', () => {
+            dropdown.classList.toggle('open');
+            if (dropdown.classList.contains('open')) {
+                searchInput.focus();
+                updateDisabled();
             }
         });
 
-        allDropdowns.forEach(dropdown => {
-            const currentSelectionId = dropdown.value;
+        // Restaura seleção atual (modo edição)
+        const currentVal = realSelect.value;
+        if (currentVal) {
+            const opt = realSelect.options[realSelect.selectedIndex];
+            setDisplay(selectedDisplay, opt.value, opt.text, opt.dataset.sprite || '');
+            dropdown.querySelectorAll('.pkm-card').forEach(c => {
+                c.classList.toggle('selected', c.dataset.id === currentVal);
+            });
+        }
+    });
 
-            for (const option of dropdown.options) {
-                if (option.value) {
-                    const pokemonId = option.value;
-                    const pokemon = availablePokemon.find(p => p.id == pokemonId);
+    function selectPokemon(wrapper, realSelect, card, id, name, sprite) {
+        realSelect.value = id;
+        realSelect.dispatchEvent(new Event('change'));
+        const selectedDisplay = wrapper.querySelector('.pkm-selected-display');
+        setDisplay(selectedDisplay, id, name, sprite);
+        wrapper.querySelectorAll('.pkm-card').forEach(c => c.classList.toggle('selected', c === card));
+        wrapper.querySelector('.pkm-dropdown').classList.remove('open');
+        wrapper.querySelector('.pkm-search-input').value = '';
+        wrapper.querySelectorAll('.pkm-card').forEach(c => c.classList.remove('hidden'));
+        updateDisabled();
+    }
 
-                    if (pokemon && pokemon.evolChain) {
-                        if (selectedChains.has(pokemon.evolChain) && pokemonId !== currentSelectionId) {
-                            option.style.display = 'none';
-                        } else {
-                            option.style.display = '';
-                        }
-                    }
-                }
-            }
+    function setDisplay(display, id, name, sprite) {
+        display.innerHTML = `
+            <img src="${sprite}" alt="${name}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+            <span class="selected-name">${name}</span>
+            <button type="button" class="clear-btn" title="Limpar">✕</button>`;
+        display.querySelector('.clear-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            clearPicker(display);
         });
     }
 
-    allDropdowns.forEach(dropdown => {
-        dropdown.addEventListener('change', updateDropdowns);
-    });
+    function clearPicker(display) {
+        const wrapper   = display.closest('.pkm-picker-wrapper');
+        const realSelect = document.getElementById(wrapper.dataset.target);
+        realSelect.value = '';
+        realSelect.dispatchEvent(new Event('change'));
+        display.innerHTML = '<span class="placeholder-text">Nenhum selecionado</span>';
+        wrapper.querySelectorAll('.pkm-card').forEach(c => c.classList.remove('selected'));
+        updateDisabled();
+    }
+
+    // ── Desabilita mesma evolChain nos dois pickers ──
+    function updateDisabled() {
+        const selectedChains = new Set();
+        document.querySelectorAll('.pkm-real-select').forEach(sel => {
+            if (sel.value) {
+                const opt = sel.options[sel.selectedIndex];
+                const chain = opt.dataset.chain;
+                if (chain) selectedChains.add(chain);
+            }
+        });
+
+        document.querySelectorAll('.pkm-picker-wrapper').forEach(wrapper => {
+            const realSelect = document.getElementById(wrapper.dataset.target);
+            const currentVal = realSelect.value;
+            wrapper.querySelectorAll('.pkm-card').forEach(card => {
+                const chain = card.dataset.chain;
+                const isCurrentlySelected = card.dataset.id === currentVal;
+                const blocked = chain && selectedChains.has(chain) && !isCurrentlySelected;
+                card.classList.toggle('disabled', blocked);
+            });
+        });
+    }
 </script>
 </body>
 </html>
