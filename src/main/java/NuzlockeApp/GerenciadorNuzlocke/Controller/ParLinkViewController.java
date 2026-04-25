@@ -118,4 +118,46 @@ public class ParLinkViewController {
             return "form-par"; // Retorna para o formulário com a mensagem de erro
         }
     }
+
+    @GetMapping("/{parId}/editar")
+    public String mostraredicao(
+            @PathVariable long runId,
+            @PathVariable long parId,
+            Model model) {
+        ParLink parExistente = parLinkService.findById(parId);
+        if (parExistente == null) {
+            return "redirect:/runs/" + runId;
+        }
+
+        List<Pokemon> todososPKM = pokemonService.findAll();
+
+        model.addAttribute("runId", runId);
+        model.addAttribute("par", parExistente);
+        model.addAttribute("pokemons", todososPKM);
+        return "form-par";
+    }
+
+    @PostMapping("/{parId}/editar")
+    public String salvarEdicao(
+            @PathVariable Long runId,
+            @PathVariable Long parId,
+            @ModelAttribute("par") ParLink parAtualizado,
+            Model model) {
+        RunsSL run = runsSLService.findById(runId);
+        if (run != null) {
+            parAtualizado.setRun(run);
+        }
+        parAtualizado.setId(parId);
+        try {
+            parLinkService.save(parAtualizado);
+            return "redirect:/runs/" + runId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("runId", runId);
+            model.addAttribute("par", parAtualizado);
+            model.addAttribute("pokemons", pokemonService.findAll());
+            return "form-par";
+        }
+    }
+
 }
