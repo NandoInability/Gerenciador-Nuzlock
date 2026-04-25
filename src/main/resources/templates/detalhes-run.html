@@ -2,6 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes da Run</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -20,68 +21,68 @@
         .run-header {
             background: rgba(255,255,255,0.03);
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 2rem 0 1.5rem;
-            margin-bottom: 2rem;
+            padding: 1.25rem 0 1rem;
+            margin-bottom: 1.25rem;
         }
         .run-header-inner {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
+            align-items: center;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
         .run-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: clamp(0.6rem, 2vw, 0.9rem);
+            font-size: clamp(0.7rem, 3vw, 1rem);
             color: #f0c040;
             text-shadow: 2px 2px 0 #b8860b, 4px 4px 0 #8b6914;
-            line-height: 2;
-            margin-bottom: 0.4rem;
+            line-height: 1.8;
+            margin-bottom: 0.3rem;
         }
         .run-meta {
             color: rgba(255,255,255,0.5);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
         }
-        .run-meta strong { color: rgba(255,255,255,0.8); }
+        .run-meta strong { color: rgba(255,255,255,0.85); }
 
         .btn-voltar {
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
             color: rgba(255,255,255,0.7);
             border-radius: 10px;
-            padding: 0.5rem 1.2rem;
+            padding: 0.55rem 1.1rem;
             font-weight: 700;
             font-family: 'Nunito', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             text-decoration: none;
             transition: all 0.2s;
             white-space: nowrap;
         }
         .btn-voltar:hover { background: rgba(255,255,255,0.13); color: #fff; }
 
-        /* ── CONTENT WRAPPER ── */
+        /* ── CONTENT ── */
         .content-wrap {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 1.5rem 4rem;
+            padding: 0 1rem 4rem;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
             gap: 0.75rem;
         }
         .section-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.5);
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.4);
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -92,18 +93,14 @@
             color: #fff;
             font-weight: 800;
             font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             border-radius: 12px;
-            padding: 0.6rem 1.5rem;
+            padding: 0.65rem 1.4rem;
             box-shadow: 0 4px 15px rgba(230,57,70,0.4);
             text-decoration: none;
             transition: all 0.2s;
         }
-        .btn-add-par:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(230,57,70,0.5);
-            color: #fff;
-        }
+        .btn-add-par:hover { transform: translateY(-2px); color: #fff; }
 
         /* ── PAR CARD ── */
         .par-card {
@@ -112,129 +109,118 @@
             border-radius: 18px;
             overflow: hidden;
             margin-bottom: 1rem;
-            transition: border-color 0.2s;
         }
-        .par-card:hover { border-color: rgba(240,192,64,0.25); }
 
         .par-card-header {
             background: linear-gradient(135deg, rgba(230,57,70,0.25), rgba(193,18,31,0.15));
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 0.6rem 1.2rem;
+            padding: 0.75rem 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 0.5rem;
             flex-wrap: wrap;
         }
-        .par-card-header .local-label {
-            font-size: 0.7rem;
+        .local-label {
+            font-size: 0.75rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #f0c040;
         }
-        .par-card-header .local-name {
-            font-size: 0.85rem;
+        .local-name {
+            font-size: 0.95rem;
             font-weight: 700;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.9);
         }
-        .par-actions {
-            display: flex;
-            gap: 0.4rem;
-        }
+        .par-actions { display: flex; gap: 0.4rem; }
 
-        /* ── POKÉMON SLOT ── */
+        /* ── POKÉMON GRID — empilha no mobile ── */
         .pkm-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
+        @media (max-width: 520px) {
+            .pkm-grid {
+                grid-template-columns: 1fr;
+            }
+            .pkm-slot:first-child {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.07);
+            }
+        }
+
         .pkm-slot {
-            padding: 1.2rem;
+            padding: 1rem;
             position: relative;
         }
-        .pkm-slot:first-child {
-            border-right: 1px solid rgba(255,255,255,0.07);
-        }
-        .pkm-slot.morto {
-            opacity: 0.45;
-        }
+        .pkm-slot:first-child { border-right: 1px solid rgba(255,255,255,0.07); }
+        .pkm-slot.morto { opacity: 0.45; }
         .pkm-slot.morto::after {
             content: '💀';
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
 
         .pkm-slot-header {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: rgba(255,255,255,0.35);
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.75rem;
         }
 
         .pkm-main {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.7rem;
+            gap: 0.85rem;
+            margin-bottom: 0.75rem;
         }
         .pkm-sprite {
-            width: 72px;
-            height: 72px;
+            width: 88px;
+            height: 88px;
             image-rendering: pixelated;
             flex-shrink: 0;
         }
-        .pkm-info .pkm-apelido {
+        .pkm-apelido {
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 1.15rem;
             color: #fff;
             line-height: 1.2;
         }
-        .pkm-info .pkm-especie {
-            font-size: 0.8rem;
+        .pkm-especie {
+            font-size: 0.85rem;
             color: rgba(255,255,255,0.45);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.4rem;
         }
         .pkm-types { display: flex; flex-wrap: wrap; gap: 4px; }
 
-        /* Type badges — mesmos do style.css mas inline para garantir */
-        .type-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.62rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        /* Status & actions row */
+        /* Status & actions */
         .pkm-status-row {
             display: flex;
             align-items: center;
             gap: 0.4rem;
             flex-wrap: wrap;
-            margin-top: 0.6rem;
+            margin-top: 0.5rem;
         }
         .status-badge {
             display: inline-block;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 800;
         }
         .status-vivo  { background: rgba(45,198,83,0.2);  color: #2dc653; border: 1px solid rgba(45,198,83,0.35); }
         .status-morto { background: rgba(230,57,70,0.2);  color: #e63946; border: 1px solid rgba(230,57,70,0.35); }
 
-        /* Small action buttons */
         .btn-sm-action {
             border: none;
             border-radius: 8px;
-            padding: 3px 10px;
-            font-size: 0.72rem;
+            padding: 5px 12px;
+            font-size: 0.8rem;
             font-weight: 700;
             font-family: 'Nunito', sans-serif;
             cursor: pointer;
@@ -242,11 +228,11 @@
             text-decoration: none;
             display: inline-block;
         }
-        .btn-morto   { background: rgba(230,57,70,0.2);  color: #e63946; border: 1px solid rgba(230,57,70,0.35); }
+        .btn-morto      { background: rgba(230,57,70,0.2);  color: #e63946; border: 1px solid rgba(230,57,70,0.35); }
         .btn-morto:hover { background: rgba(230,57,70,0.4); }
-        .btn-evoluir { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+        .btn-evoluir    { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
         .btn-evoluir:hover { background: rgba(251,191,36,0.3); }
-        .btn-editar-par  { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .btn-editar-par { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
         .btn-editar-par:hover { background: rgba(59,130,246,0.3); }
         .btn-deletar-par { background: rgba(230,57,70,0.12); color: #e63946; border: 1px solid rgba(230,57,70,0.25); }
         .btn-deletar-par:hover { background: rgba(230,57,70,0.25); }
@@ -258,9 +244,7 @@
             border-radius: 16px;
             color: #fff;
         }
-        .modal-header {
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
+        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.08); }
         .modal-header .modal-title {
             font-family: 'Press Start 2P', monospace;
             font-size: 0.65rem;
@@ -275,22 +259,15 @@
             color: #fff;
             font-family: 'Nunito', sans-serif;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .evo-btn:hover {
-            background: rgba(240,192,64,0.15);
-            border-color: rgba(240,192,64,0.5);
-            color: #f0c040;
-        }
+        .evo-btn:hover { background: rgba(240,192,64,0.15); border-color: rgba(240,192,64,0.5); color: #f0c040; }
         .evo-btn img { image-rendering: pixelated; display: block; margin: 0 auto 0.5rem; }
 
         /* ── EMPTY STATE ── */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
+        .empty-state { text-align: center; padding: 4rem 2rem; }
         .empty-state .empty-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
         .empty-state p {
             font-family: 'Press Start 2P', monospace;
@@ -298,18 +275,10 @@
             color: rgba(255,255,255,0.3);
             line-height: 2;
         }
-
-        /* ── DIVIDER ── */
-        .section-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.07);
-            margin: 1.5rem 0;
-        }
     </style>
 </head>
 <body>
 
-<!-- Header da Run -->
 <div class="run-header">
     <div class="run-header-inner">
         <div>
@@ -328,17 +297,14 @@
 
 <div class="content-wrap">
 
-    <!-- Barra de ações -->
     <div class="section-header">
         <span class="section-title">⚔️ Pares Capturados</span>
         <a th:href="@{/runs/{id}/pares/novo(id=${run.id})}" class="btn-add-par">+ Adicionar Par</a>
     </div>
 
-    <!-- Lista de pares -->
     <div th:each="par : ${run.links}">
         <div class="par-card">
 
-            <!-- Header do par -->
             <div class="par-card-header">
                 <div>
                     <span class="local-label">📍 Local · </span>
@@ -358,16 +324,15 @@
                 </div>
             </div>
 
-            <!-- Slots dos dois Pokémon -->
             <div class="pkm-grid">
 
                 <!-- PKM 1 -->
                 <div class="pkm-slot" th:classappend="${par.pkm1.status != 'Vivo'} ? 'morto' : ''">
-                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador1}">Jogador 1</div>
+                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador1}"></div>
                     <div class="pkm-main">
                         <img class="pkm-sprite" th:src="${par.pkm1.especie.sprite}" alt="sprite"
                              onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
-                        <div class="pkm-info">
+                        <div>
                             <div class="pkm-apelido" th:text="${par.pkm1.apelido}">Apelido</div>
                             <div class="pkm-especie" th:text="${par.pkm1.especie.name}">Espécie</div>
                             <div class="pkm-types">
@@ -382,24 +347,18 @@
                     <div class="pkm-status-row">
                         <span class="status-badge"
                               th:classappend="${par.pkm1.status == 'Vivo'} ? 'status-vivo' : 'status-morto'"
-                              th:text="${par.pkm1.status}">Status</span>
-
-                        <!-- Marcar morto -->
+                              th:text="${par.pkm1.status}"></span>
                         <form th:if="${par.pkm1.status == 'Vivo'}"
                               th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm1.id})}"
                               method="post" class="d-inline">
                             <button type="submit" class="btn-sm-action btn-morto">💀 Morto</button>
                         </form>
-
-                        <!-- Evoluir simples -->
                         <form th:if="${par.pkm1.especie.nextEvolutions != null and par.pkm1.especie.nextEvolutions.size() == 1}"
                               th:action="@{/runs/{r}/pares/{p}/pkm1/evoluir(r=${run.id},p=${par.id})}"
                               method="post" class="d-inline">
                             <input type="hidden" name="novaEspecieId" th:value="${par.pkm1.especie.nextEvolutions[0].id}"/>
                             <button type="submit" class="btn-sm-action btn-evoluir">⬆ Evoluir</button>
                         </form>
-
-                        <!-- Evoluir split -->
                         <span th:if="${par.pkm1.especie.nextEvolutions != null and par.pkm1.especie.nextEvolutions.size() > 1}">
                             <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal"
                                     th:data-bs-target="${'#modalEvo1-' + par.id}">⬆ Evoluir</button>
@@ -416,7 +375,7 @@
                                                   method="post" class="text-center">
                                                 <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
                                                 <button type="submit" class="evo-btn">
-                                                    <img th:src="${evo.sprite}" width="64"/>
+                                                    <img th:src="${evo.sprite}" width="72"/>
                                                     <span th:text="${evo.name}"></span>
                                                 </button>
                                             </form>
@@ -430,11 +389,11 @@
 
                 <!-- PKM 2 -->
                 <div class="pkm-slot" th:classappend="${par.pkm2.status != 'Vivo'} ? 'morto' : ''">
-                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador2}">Jogador 2</div>
+                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador2}"></div>
                     <div class="pkm-main">
                         <img class="pkm-sprite" th:src="${par.pkm2.especie.sprite}" alt="sprite"
                              onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
-                        <div class="pkm-info">
+                        <div>
                             <div class="pkm-apelido" th:text="${par.pkm2.apelido}">Apelido</div>
                             <div class="pkm-especie" th:text="${par.pkm2.especie.name}">Espécie</div>
                             <div class="pkm-types">
@@ -449,24 +408,18 @@
                     <div class="pkm-status-row">
                         <span class="status-badge"
                               th:classappend="${par.pkm2.status == 'Vivo'} ? 'status-vivo' : 'status-morto'"
-                              th:text="${par.pkm2.status}">Status</span>
-
-                        <!-- Marcar morto -->
+                              th:text="${par.pkm2.status}"></span>
                         <form th:if="${par.pkm2.status == 'Vivo'}"
                               th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm2.id})}"
                               method="post" class="d-inline">
                             <button type="submit" class="btn-sm-action btn-morto">💀 Morto</button>
                         </form>
-
-                        <!-- Evoluir simples -->
                         <form th:if="${par.pkm2.especie.nextEvolutions != null and par.pkm2.especie.nextEvolutions.size() == 1}"
                               th:action="@{/runs/{r}/pares/{p}/pkm2/evoluir(r=${run.id},p=${par.id})}"
                               method="post" class="d-inline">
                             <input type="hidden" name="novaEspecieId" th:value="${par.pkm2.especie.nextEvolutions[0].id}"/>
                             <button type="submit" class="btn-sm-action btn-evoluir">⬆ Evoluir</button>
                         </form>
-
-                        <!-- Evoluir split -->
                         <span th:if="${par.pkm2.especie.nextEvolutions != null and par.pkm2.especie.nextEvolutions.size() > 1}">
                             <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal"
                                     th:data-bs-target="${'#modalEvo2-' + par.id}">⬆ Evoluir</button>
@@ -483,7 +436,7 @@
                                                   method="post" class="text-center">
                                                 <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
                                                 <button type="submit" class="evo-btn">
-                                                    <img th:src="${evo.sprite}" width="64"/>
+                                                    <img th:src="${evo.sprite}" width="72"/>
                                                     <span th:text="${evo.name}"></span>
                                                 </button>
                                             </form>
@@ -495,11 +448,10 @@
                     </div>
                 </div>
 
-            </div><!-- /pkm-grid -->
-        </div><!-- /par-card -->
+            </div>
+        </div>
     </div>
 
-    <!-- Empty state -->
     <div th:if="${run.links.isEmpty()}" class="empty-state">
         <span class="empty-icon">🎮</span>
         <p>Nenhum par adicionado ainda.<br>Clique em "+ Adicionar Par" para começar!</p>
