@@ -16,7 +16,6 @@
             color: #fff;
         }
 
-        /* ── HERO ── */
         .hero {
             text-align: center;
             padding: 3.5rem 1rem 2.5rem;
@@ -58,7 +57,6 @@
             color: #fff;
         }
 
-        /* ── GRID ── */
         .runs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -68,7 +66,6 @@
             margin: 0 auto;
         }
 
-        /* ── RUN CARD ── */
         .run-card {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.1);
@@ -84,7 +81,6 @@
             border-color: rgba(240,192,64,0.3);
         }
 
-        /* Capa do jogo */
         .game-cover {
             position: relative;
             height: 130px;
@@ -95,7 +91,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top center;
+            object-position: center;
             display: block;
         }
         .game-cover .cover-overlay {
@@ -119,7 +115,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Corpo */
         .run-body {
             padding: 1rem 1.1rem 0.5rem;
             flex: 1;
@@ -141,7 +136,6 @@
             font-weight: 400;
         }
 
-        /* Footer */
         .run-footer {
             padding: 0.75rem 1.1rem;
             display: flex;
@@ -163,10 +157,7 @@
             text-decoration: none;
             transition: all 0.2s;
         }
-        .btn-detalhes:hover {
-            background: rgba(255,255,255,0.13);
-            color: #fff;
-        }
+        .btn-detalhes:hover { background: rgba(255,255,255,0.13); color: #fff; }
 
         .btn-editar {
             background: rgba(59,130,246,0.15);
@@ -180,10 +171,7 @@
             text-decoration: none;
             transition: all 0.2s;
         }
-        .btn-editar:hover {
-            background: rgba(59,130,246,0.3);
-            color: #93c5fd;
-        }
+        .btn-editar:hover { background: rgba(59,130,246,0.3); color: #93c5fd; }
 
         .btn-deletar {
             background: rgba(230,57,70,0.12);
@@ -197,22 +185,15 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-deletar:hover {
-            background: rgba(230,57,70,0.25);
-        }
+        .btn-deletar:hover { background: rgba(230,57,70,0.25); }
 
-        /* ── EMPTY STATE ── */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
             max-width: 420px;
             margin: 0 auto;
         }
-        .empty-state .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
+        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
         .empty-state h3 {
             font-family: 'Press Start 2P', monospace;
             font-size: 0.7rem;
@@ -220,48 +201,29 @@
             line-height: 1.8;
             margin-bottom: 0.75rem;
         }
-        .empty-state p {
-            color: rgba(255,255,255,0.3);
-            font-size: 0.9rem;
-        }
+        .empty-state p { color: rgba(255,255,255,0.3); font-size: 0.9rem; }
     </style>
 </head>
 <body>
 <main>
 
-    <!-- Hero -->
     <div class="hero">
         <h1 class="hero-title">Minhas Runs<br>de Soulink</h1>
         <p class="hero-sub">Acompanhe suas aventuras e seus pares.</p>
         <a href="/runs/novo" class="btn-nova-run">+ Criar Nova Run</a>
     </div>
 
-    <!-- Grid de runs -->
     <div class="runs-grid" th:if="${!runs.isEmpty()}">
         <div th:each="run : ${runs}" class="run-card">
 
-            <!-- Capa do jogo -->
             <div class="game-cover">
-                <!-- Mapeamento de capa por ID do jogo -->
-                <img th:src="${
-                    run.jogo.id == 1 ? 'https://archives.bulbagarden.net/media/upload/thumb/a/a4/Pok%C3%A9mon_Black_and_White_2_boxart.png/250px-Pok%C3%A9mon_Black_and_White_2_boxart.png' :
-                    run.jogo.id == 2 ? 'https://archives.bulbagarden.net/media/upload/thumb/8/8f/Pok%C3%A9mon_Platinum_boxart.png/250px-Pok%C3%A9mon_Platinum_boxart.png' :
-                    run.jogo.id == 3 ? 'https://archives.bulbagarden.net/media/upload/thumb/4/4f/HeartGoldSoulSilverDualBoxart.png/250px-HeartGoldSoulSilverDualBoxart.png' :
-                    run.jogo.id == 4 ? 'https://archives.bulbagarden.net/media/upload/thumb/7/76/Pok%C3%A9mon_Omega_Ruby_and_Alpha_Sapphire_boxart.png/250px-Pok%C3%A9mon_Omega_Ruby_and_Alpha_Sapphire_boxart.png' :
-                    run.jogo.id == 5 ? 'https://archives.bulbagarden.net/media/upload/thumb/4/4a/Pok%C3%A9mon_X_and_Y_boxart.png/250px-Pok%C3%A9mon_X_and_Y_boxart.png' :
-                    run.jogo.id == 6 ? 'https://archives.bulbagarden.net/media/upload/thumb/5/53/Pok%C3%A9mon_Pearl_and_Diamond_boxart.png/250px-Pok%C3%A9mon_Pearl_and_Diamond_boxart.png' :
-                    run.jogo.id == 7 ? 'https://archives.bulbagarden.net/media/upload/thumb/1/1b/Pok%C3%A9mon_Sun_and_Moon_boxart.png/250px-Pok%C3%A9mon_Sun_and_Moon_boxart.png' :
-                    run.jogo.id == 8 ? 'https://archives.bulbagarden.net/media/upload/thumb/8/81/FireRedLeafGreenDualBoxart.png/250px-FireRedLeafGreenDualBoxart.png' :
-                    run.jogo.id == 9 ? 'https://archives.bulbagarden.net/media/upload/thumb/9/9a/Pok%C3%A9mon_Ultra_Sun_and_Ultra_Moon_boxart.png/250px-Pok%C3%A9mon_Ultra_Sun_and_Ultra_Moon_boxart.png' :
-                    'https://archives.bulbagarden.net/media/upload/2/24/Pokeball.png'
-                }"
+                <img th:src="${run.jogo.sprite}"
                      th:alt="${run.jogo.nome}"
-                     onerror="this.src='https://archives.bulbagarden.net/media/upload/2/24/Pokeball.png'">
+                     onerror="this.style.display='none'">
                 <div class="cover-overlay"></div>
                 <span class="game-badge" th:text="${run.jogo.nome}">Nome do Jogo</span>
             </div>
 
-            <!-- Corpo -->
             <div class="run-body">
                 <div class="run-name" th:text="${run.nomeDaRun}">Nome da Run</div>
                 <div class="run-players">
@@ -272,7 +234,6 @@
                 </div>
             </div>
 
-            <!-- Footer -->
             <div class="run-footer">
                 <a th:href="@{/runs/{id}(id=${run.id})}" class="btn-detalhes">Ver Detalhes</a>
                 <div class="d-flex gap-1">
@@ -290,7 +251,6 @@
         </div>
     </div>
 
-    <!-- Empty state -->
     <div th:if="${runs.isEmpty()}" class="empty-state">
         <span class="empty-icon">🎮</span>
         <h3>Nenhuma run cadastrada ainda</h3>
