@@ -10,6 +10,7 @@ public class Jogo {
     private Long id;
     private String nome;
     private int geracao;
+    private String sprite;
 
     public Long getId() {
         return id;
@@ -34,4 +35,8 @@ public class Jogo {
     public void setGeracao(int geracao) {
         this.geracao = geracao;
     }
+
+    public String getSprite() { return sprite; }
+
+    public void setSprite(String sprite) { this.sprite = sprite; }
 }
