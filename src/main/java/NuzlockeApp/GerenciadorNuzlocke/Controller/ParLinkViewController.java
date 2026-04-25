@@ -160,4 +160,24 @@ public class ParLinkViewController {
         }
     }
 
+    @PostMapping("/{parId}/pkm1/evoluir")
+    public String evoluirPkm1(@PathVariable Long runId, @PathVariable Long parId,
+                              @RequestParam Long novaEspecieId) {
+        ParLink par = parLinkService.findById(parId);
+        Pokemon novaEspecie = pokemonService.findById(novaEspecieId);
+        par.getPkm1().setEspecie(novaEspecie);
+        pkmCapturadoService.save(par.getPkm1());
+        return "redirect:/runs/" + runId;
+    }
+
+    @PostMapping("/{parId}/pkm2/evoluir")
+    public String evoluirPkm2(@PathVariable Long runId, @PathVariable Long parId,
+                              @RequestParam Long novaEspecieId) {
+        ParLink par = parLinkService.findById(parId);
+        Pokemon novaEspecie = pokemonService.findById(novaEspecieId);
+        par.getPkm2().setEspecie(novaEspecie);
+        pkmCapturadoService.save(par.getPkm2());
+        return "redirect:/runs/" + runId;
+    }
+
 }

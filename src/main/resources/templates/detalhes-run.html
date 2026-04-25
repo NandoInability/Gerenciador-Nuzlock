@@ -50,7 +50,40 @@
                                 <form th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm1.id})}" method="post" class="d-inline ms-2" th:if="${par.pkm1.status == 'Vivo'}">
                                     <button type="submit" class="btn btn-danger btn-sm">Morto</button>
                                 </form>
-                            </div>
+                                <form th:if="${par.pkm1.especie.nextEvolutions != null and par.pkm1.especie.nextEvolutions.size() == 1}"
+                                      th:action="@{/runs/{r}/pares/{p}/pkm1/evoluir(r=${run.id},p=${par.id})}"
+                                      method="post" class="d-inline ms-1">
+                                    <input type="hidden" name="novaEspecieId" th:value="${par.pkm1.especie.nextEvolutions[0].id}"/>
+                                    <button type="submit" class="btn btn-warning btn-sm">⬆ Evoluir</button>
+                                </form>
+
+                                <!-- Evoluir PKM1 - split evolution -->
+                                <span th:if="${par.pkm1.especie.nextEvolutions != null and par.pkm1.especie.nextEvolutions.size() > 1}">
+                                    <button class="btn btn-warning btn-sm ms-1" data-bs-toggle="modal"
+                                        th:data-bs-target="${'#modalEvo1-' + par.id}">⬆ Evoluir</button>
+                                    <div class="modal fade" th:id="${'modalEvo1-' + par.id}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Escolha a evolução</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body d-flex gap-3 justify-content-center flex-wrap">
+                                                <form th:each="evo : ${par.pkm1.especie.nextEvolutions}"
+                                                      th:action="@{/runs/{r}/pares/{p}/pkm1/evoluir(r=${run.id},p=${par.id})}"
+                                                      method="post" class="text-center">
+                                                    <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
+                                                    <button type="submit" class="btn btn-outline-primary">
+                                                        <img th:src="${evo.sprite}" width="60"/><br/>
+                                                        <span th:text="${evo.name}"></span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                                                        </div>
                         </div>
 
                         <div class="col-6">
@@ -68,6 +101,40 @@
                                 <form th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm2.id})}" method="post" class="d-inline ms-2" th:if="${par.pkm2.status == 'Vivo'}">
                                     <button type="submit" class="btn btn-danger btn-sm">Morto</button>
                                 </form>
+                                <!-- Evoluir PKM2 - 1 evolução -->
+                                <form th:if="${par.pkm2.especie.nextEvolutions != null and par.pkm2.especie.nextEvolutions.size() == 1}"
+                                      th:action="@{/runs/{r}/pares/{p}/pkm2/evoluir(r=${run.id},p=${par.id})}"
+                                      method="post" class="d-inline ms-1">
+                                    <input type="hidden" name="novaEspecieId" th:value="${par.pkm2.especie.nextEvolutions[0].id}"/>
+                                    <button type="submit" class="btn btn-warning btn-sm">⬆ Evoluir</button>
+                                </form>
+
+                                <!-- Evoluir PKM2 - split evolution -->
+                                <span th:if="${par.pkm2.especie.nextEvolutions != null and par.pkm2.especie.nextEvolutions.size() > 1}">
+                                    <button class="btn btn-warning btn-sm ms-1" data-bs-toggle="modal"
+                                            th:data-bs-target="${'#modalEvo2-' + par.id}">⬆ Evoluir</button>
+                                    <div class="modal fade" th:id="${'modalEvo2-' + par.id}" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Escolha a evolução</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body d-flex gap-3 justify-content-center flex-wrap">
+                                                    <form th:each="evo : ${par.pkm2.especie.nextEvolutions}"
+                                                          th:action="@{/runs/{r}/pares/{p}/pkm2/evoluir(r=${run.id},p=${par.id})}"
+                                                          method="post" class="text-center">
+                                                        <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
+                                                        <button type="submit" class="btn btn-outline-primary">
+                                                            <img th:src="${evo.sprite}" width="60"/><br/>
+                                                            <span th:text="${evo.name}"></span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
                                 <form th:action="@{/runs/{runId}/pares/{parId}/deletar(runId=${run.id}, parId=${par.id})}" method="post" class="d-inline ms-1">
                                     <input type="hidden" name="_method" value="delete"/>
                                     <button type="submit" class="btn btn-outline-danger btn-sm"
@@ -90,5 +157,6 @@
         </div>
     </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

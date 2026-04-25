@@ -1,7 +1,11 @@
 package NuzlockeApp.GerenciadorNuzlocke.entity;
 
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pokemons")
@@ -92,5 +96,22 @@ public class Pokemon {
     }
     public void setSprite(String sprite) {
         this.sprite = sprite;
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name = "pokemon_evolutions",
+            joinColumns = @JoinColumn(name = "pokemon_id"),
+            inverseJoinColumns = @JoinColumn(name = "next_evolution_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Pokemon> nextEvolutions = new ArrayList<>();
+
+    public List<Pokemon> getNextEvolutions() {
+        return nextEvolutions;
+    }
+    public void setNextEvolutions(List<Pokemon> nextEvolutions) {
+        this.nextEvolutions = nextEvolutions;
     }
 }
