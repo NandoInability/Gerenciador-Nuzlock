@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,116 +6,315 @@
     <title>Nova Run</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #1a1a2e;
+            background-image: radial-gradient(ellipse at 20% 20%, #16213e 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 80%, #0f3460 0%, transparent 60%);
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .page-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.85rem;
+            color: #f0c040;
+            text-shadow: 2px 2px 0 #b8860b, 4px 4px 0 #8b6914;
+            letter-spacing: 1px;
+        }
+
+        .main-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border-radius: 18px 18px 0 0;
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #ffd60a;
+        }
+
+        .player-fieldset {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 14px;
+        }
+
+        .player-fieldset legend {
+            color: #f0c040;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: #1a1a2e;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .form-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(255,255,255,0.1);
+            border-color: #f0c040;
+            color: #fff;
+            box-shadow: 0 0 0 3px rgba(240,192,64,0.15);
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.3); }
+        .form-select option { background: #16213e; color: #fff; }
+
+        hr {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        /* Resultado do sorteio */
+        .resultado-box {
+            background: rgba(240,192,64,0.08);
+            border: 1px solid rgba(240,192,64,0.25);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 0.75rem;
+        }
+        .resultado-box .result-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+        .resultado-box .result-name {
+            color: #f0c040;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.75rem;
+            text-shadow: 1px 1px 0 #b8860b;
+        }
+        .resultado-box .result-error {
+            color: #e63946;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* Botão sortear */
+        .btn-sortear {
+            background: linear-gradient(135deg, #2dc653, #1a8c3a);
+            border: none;
+            color: #fff;
+            font-weight: 800;
+            border-radius: 10px;
+            padding: 0.5rem 1.5rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(45,198,83,0.3);
+        }
+        .btn-sortear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45,198,83,0.45);
+            color: #fff;
+        }
+
+        .btn-salvar {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border: none;
+            color: #fff;
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 0.65rem 2rem;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(230,57,70,0.4);
+        }
+        .btn-salvar:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230,57,70,0.5);
+            color: #fff;
+        }
+        .btn-salvar:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-cancelar {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            padding: 0.65rem 2rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-cancelar:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+
+        /* Divisor estilizado */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.5rem 0;
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        .section-divider span {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
 <body>
 <main class="container py-5">
-    <div class="col-md-8 col-lg-6 mx-auto">
-        <div class="card shadow-sm">
-            <div class="card-header text-center">
-                <h2 class="fw-bold">Iniciando uma Nova Aventura</h2>
+    <div class="col-md-9 col-lg-7 mx-auto">
+        <div class="main-card shadow-lg">
+            <div class="card-header-custom">
+                <h2 class="page-title mb-0"
+                    th:text="${run.id == null} ? 'Nova Run' : 'Editar Run'">Nova Run</h2>
             </div>
-            <div class="card-body p-4">
-                <form th:action="${run.id == null} ? @{/runs} : @{/runs/{id}/editar(id=${run.id})}" th:object="${run}" method="post">
+            <div class="p-4">
+                <form th:action="${run.id == null} ? @{/runs} : @{/runs/{id}/editar(id=${run.id})}"
+                      th:object="${run}"
+                      method="post">
 
                     <input type="hidden" th:field="*{id}" />
+
+                    <!-- Jogo -->
                     <div class="mb-3">
-                        <label for="jogo" class="form-label">Selecione o Jogo:</label>
-                        <select class="form-select" id="jogo" th:field="*{jogo}" required>
+                        <label class="form-label">🎮 Jogo</label>
+                        <select class="form-select" th:field="*{jogo}" required>
                             <option value="">Escolha um jogo...</option>
                             <option th:each="j : ${jogos}" th:value="${j.id}" th:text="${j.nome}"></option>
                         </select>
                     </div>
 
+                    <!-- Nome da Run -->
                     <div class="mb-3">
-                        <label for="nomeDaRun" class="form-label">Dê um Nome para a Run:</label>
-                        <input type="text" class="form-control" id="nomeDaRun" th:field="*{nomeDaRun}" placeholder="Ex: Minha primeira tentativa!" required>
+                        <label class="form-label">📛 Nome da Run</label>
+                        <input type="text" class="form-control" th:field="*{nomeDaRun}"
+                               placeholder="Ex: Minha primeira tentativa!" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="jogador1" class="form-label">Seu Nickname:</label>
-                        <input type="text" class="form-control" id="jogador1" th:field="*{jogador1}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="jogador2" class="form-label">Nickname do seu Parceiro:</label>
-                        <input type="text" class="form-control" id="jogador2" th:field="*{jogador2}" required>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <fieldset class="border p-3 mb-3">
-                        <legend class="float-none w-auto px-2 fs-6">Sorteio do Inicial - Jogador 1</legend>
-
-                        <div class="mb-2">
-                            <label class="form-label">Opção 1:</label>
-                            <select class="form-select starter-p1-option" id="starter-p1-opt1">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
+                    <!-- Nicknames -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label">🧑 Seu Nickname</label>
+                            <input type="text" class="form-control" th:field="*{jogador1}" required>
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">Opção 2:</label>
-                            <select class="form-select starter-p1-option" id="starter-p1-opt2">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
+                        <div class="col-sm-6">
+                            <label class="form-label">🧑 Nickname do Parceiro</label>
+                            <input type="text" class="form-control" th:field="*{jogador2}" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Opção 3:</label>
-                            <select class="form-select starter-p1-option" id="starter-p1-opt3">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
+                    </div>
+
+                    <div class="section-divider"><span>⚔️ Sorteio dos Iniciais</span></div>
+
+                    <!-- Sorteio Jogador 1 -->
+                    <fieldset class="player-fieldset border p-3 mb-3">
+                        <legend class="float-none w-auto px-2">🎮 Jogador 1 — Inicial</legend>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 1</label>
+                                <select class="form-select starter-p1-option" id="starter-p1-opt1">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 2</label>
+                                <select class="form-select starter-p1-option" id="starter-p1-opt2">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 3</label>
+                                <select class="form-select starter-p1-option" id="starter-p1-opt3">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-success" id="sortear-p1-btn">Sortear!</button>
+                            <button type="button" class="btn-sortear btn" id="sortear-p1-btn">🎲 Sortear!</button>
                         </div>
 
-                        <div id="resultado-p1" class="text-center mt-3">
-                        </div>
+                        <div id="resultado-p1"></div>
                     </fieldset>
 
                     <input type="hidden" id="starter-p1-choice" name="starterP1Id" />
 
-                    <fieldset class="border p-3 mb-3">
-                        <legend class="float-none w-auto px-2 fs-6">Sorteio do Inicial - Jogador 2</legend>
+                    <!-- Sorteio Jogador 2 -->
+                    <fieldset class="player-fieldset border p-3 mb-4">
+                        <legend class="float-none w-auto px-2">🎮 Jogador 2 — Inicial</legend>
 
-                        <div class="mb-2">
-                            <label class="form-label">Opção 1:</label>
-                            <select class="form-select starter-p2-option" id="starter-p2-opt1">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Opção 2:</label>
-                            <select class="form-select starter-p2-option" id="starter-p2-opt2">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Opção 3:</label>
-                            <select class="form-select starter-p2-option" id="starter-p2-opt3">
-                                <option value="">Selecione um Pokémon</option>
-                                <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                            </select>
+                        <div class="row g-2 mb-3">
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 1</label>
+                                <select class="form-select starter-p2-option" id="starter-p2-opt1">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 2</label>
+                                <select class="form-select starter-p2-option" id="starter-p2-opt2">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label">Opção 3</label>
+                                <select class="form-select starter-p2-option" id="starter-p2-opt3">
+                                    <option value="">Selecione</option>
+                                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-success" id="sortear-p2-btn">Sortear!</button>
+                            <button type="button" class="btn-sortear btn" id="sortear-p2-btn">🎲 Sortear!</button>
                         </div>
 
-                        <div id="resultado-p2" class="text-center mt-3">
-                        </div>
+                        <div id="resultado-p2"></div>
                     </fieldset>
 
                     <input type="hidden" id="starter-p2-choice" name="starterP2Id" />
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="/" class="btn btn-secondary me-md-2">Cancelar</a>
-                        <button type="submit" class="btn btn-primary" id="save-run-btn" disabled>Salvar e Começar!</button>
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a href="/" class="btn-cancelar btn">Cancelar</a>
+                        <button type="submit" class="btn-salvar btn" id="save-run-btn" disabled>Salvar e Começar!</button>
                     </div>
 
                 </form>
@@ -122,71 +322,52 @@
         </div>
     </div>
 </main>
+
 <script>
-    // Pega os elementos do HTML
-    const sortearBtnP1 = document.getElementById('sortear-p1-btn');
-    const resultadoDivP1 = document.getElementById('resultado-p1');
-    const opcoesSelectP1 = document.querySelectorAll('.starter-p1-option');
     const escolhaInputP1 = document.getElementById('starter-p1-choice');
-
-    const sortearBtnP2 = document.getElementById('sortear-p2-btn');
-    const resultadoDivP2 = document.getElementById('resultado-p2');
-    const opcoesSelectP2 = document.querySelectorAll('.starter-p2-option');
     const escolhaInputP2 = document.getElementById('starter-p2-choice');
+    const saveRunBtn     = document.getElementById('save-run-btn');
 
-    const saveRunBtn = document.getElementById('save-run-btn'); // Pega o botão de salvar
-
-    // Função que verifica se pode habilitar o botão de salvar
     function checkIfReadyToSave() {
-        const p1Sorteado = escolhaInputP1.value !== '';
-        const p2Sorteado = escolhaInputP2.value !== '';
-
-        if (p1Sorteado && p2Sorteado) {
-            saveRunBtn.disabled = false; // Habilita o botão
-        } else {
-            saveRunBtn.disabled = true; // Mantém desabilitado
-        }
+        saveRunBtn.disabled = !(escolhaInputP1.value && escolhaInputP2.value);
     }
 
-    // Adiciona o "ouvinte" de clique no botão de sortear do JOGADOR 1
-    sortearBtnP1.addEventListener('click', function() {
+    function showResultado(divId, pokemonName) {
+        const div = document.getElementById(divId);
+        div.innerHTML = `
+            <div class="resultado-box">
+                <div class="result-label">Pokémon sorteado</div>
+                <div class="result-name">${pokemonName}</div>
+            </div>`;
+    }
+
+    function showError(divId, msg) {
+        const div = document.getElementById(divId);
+        div.innerHTML = `<div class="resultado-box"><div class="result-error">${msg}</div></div>`;
+    }
+
+    function sortear(selectorClass, resultDivId, hiddenInput) {
         const opcoesSelecionadas = [];
-        opcoesSelectP1.forEach(selectElement => {
-            if (selectElement.value !== '') {
-                opcoesSelecionadas.push({ id: selectElement.value, name: selectElement.options[selectElement.selectedIndex].text });
+        document.querySelectorAll('.' + selectorClass).forEach(sel => {
+            if (sel.value) {
+                opcoesSelecionadas.push({ id: sel.value, name: sel.options[sel.selectedIndex].text });
             }
         });
         if (opcoesSelecionadas.length === 0) {
-            resultadoDivP1.innerHTML = '<p class="text-danger">Selecione pelo menos uma opção!</p>';
+            showError(resultDivId, 'Selecione pelo menos uma opção!');
             return;
         }
-        const indiceSorteado = Math.floor(Math.random() * opcoesSelecionadas.length);
-        const pokemonSorteado = opcoesSelecionadas[indiceSorteado];
-        resultadoDivP1.innerHTML = `<p class="h5">O Pokémon inicial sorteado é:</p><p class="display-6 fw-bold text-primary">${pokemonSorteado.name}</p>`;
-        escolhaInputP1.value = pokemonSorteado.id;
+        const sorteado = opcoesSelecionadas[Math.floor(Math.random() * opcoesSelecionadas.length)];
+        hiddenInput.value = sorteado.id;
+        showResultado(resultDivId, sorteado.name);
+        checkIfReadyToSave();
+    }
 
-        checkIfReadyToSave(); // Verifica se pode habilitar o botão de salvar
-    });
+    document.getElementById('sortear-p1-btn').addEventListener('click', () =>
+        sortear('starter-p1-option', 'resultado-p1', escolhaInputP1));
 
-    // Adiciona o "ouvinte" de clique no botão de sortear do JOGADOR 2
-    sortearBtnP2.addEventListener('click', function() {
-        const opcoesSelecionadas = [];
-        opcoesSelectP2.forEach(selectElement => {
-            if (selectElement.value !== '') {
-                opcoesSelecionadas.push({ id: selectElement.value, name: selectElement.options[selectElement.selectedIndex].text });
-            }
-        });
-        if (opcoesSelecionadas.length === 0) {
-            resultadoDivP2.innerHTML = '<p class="text-danger">Selecione pelo menos uma opção!</p>';
-            return;
-        }
-        const indiceSorteado = Math.floor(Math.random() * opcoesSelecionadas.length);
-        const pokemonSorteado = opcoesSelecionadas[indiceSorteado];
-        resultadoDivP2.innerHTML = `<p class="h5">O Pokémon inicial sorteado é:</p><p class="display-6 fw-bold text-primary">${pokemonSorteado.name}</p>`;
-        escolhaInputP2.value = pokemonSorteado.id;
-
-        checkIfReadyToSave(); // Verifica se pode habilitar o botão de salvar
-    });
+    document.getElementById('sortear-p2-btn').addEventListener('click', () =>
+        sortear('starter-p2-option', 'resultado-p2', escolhaInputP2));
 </script>
 </body>
 </html>
