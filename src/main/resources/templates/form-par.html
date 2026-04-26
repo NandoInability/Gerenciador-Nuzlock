@@ -35,7 +35,7 @@
         .form-wrap { max-width: 560px; margin: 0 auto; padding: 1.25rem 0.9rem 5rem; }
         .form-label {
             color: rgba(255,255,255,0.65);
-            font-size: 0.75rem; font-weight: 700;
+            font-size: 0.8rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.5px;
             margin-bottom: 0.35rem; display: block;
         }
@@ -43,8 +43,8 @@
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
             color: #fff; border-radius: 10px;
-            width: 100%; padding: 0.65rem 0.85rem;
-            font-family: 'Nunito', sans-serif; font-size: 1rem;
+            width: 100%; padding: 0.75rem 0.9rem;
+            font-family: 'Nunito', sans-serif; font-size: 1.05rem;
             transition: border-color 0.2s;
         }
         .form-control:focus {
@@ -59,7 +59,7 @@
             border-radius: 14px; padding: 1rem !important; margin-bottom: 1rem;
         }
         .player-fieldset legend {
-            color: #f0c040; font-weight: 800; font-size: 0.8rem;
+            color: #f0c040; font-weight: 800; font-size: 0.85rem;
             letter-spacing: 1px; text-transform: uppercase;
             background: #1a1a2e; padding: 2px 10px; border-radius: 20px;
         }
@@ -68,66 +68,89 @@
         .pkm-picker-wrapper { position: relative; margin-bottom: 0.75rem; }
         .pkm-search-wrap { position: relative; }
         .pkm-search-icon {
-            position: absolute; left: 11px; top: 50%;
+            position: absolute; left: 13px; top: 50%;
             transform: translateY(-50%);
-            color: rgba(255,255,255,0.35); pointer-events: none; font-size: 0.95rem;
+            color: rgba(255,255,255,0.35); pointer-events: none; font-size: 1rem;
         }
         .pkm-search-input {
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 10px 10px 0 0; color: #fff;
-            padding: 0.65rem 0.85rem 0.65rem 2.4rem;
-            width: 100%; font-family: 'Nunito', sans-serif; font-size: 1rem;
+            padding: 0.8rem 0.9rem 0.8rem 2.6rem;
+            width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.05rem;
             outline: none; transition: border-color 0.2s;
         }
         .pkm-search-input:focus { border-color: #f0c040; }
         .pkm-search-input::placeholder { color: rgba(255,255,255,0.25); }
+
         .pkm-selected-display {
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; gap: 12px;
             background: rgba(240,192,64,0.1);
             border: 1px solid rgba(240,192,64,0.35);
             border-top: none; border-radius: 0 0 10px 10px;
-            padding: 0.5rem 0.85rem; min-height: 50px; cursor: pointer;
+            padding: 0.65rem 1rem; min-height: 60px; cursor: pointer;
         }
-        .pkm-selected-display img { width: 38px; height: 38px; image-rendering: pixelated; flex-shrink: 0; }
-        .pkm-selected-display .selected-name { color: #f0c040; font-weight: 700; font-size: 1rem; }
-        .pkm-selected-display .placeholder-text { color: rgba(255,255,255,0.25); font-size: 0.9rem; }
+        .pkm-selected-display img { width: 48px; height: 48px; image-rendering: pixelated; flex-shrink: 0; }
+        .pkm-selected-display .selected-name { color: #f0c040; font-weight: 700; font-size: 1.05rem; }
+        .pkm-selected-display .placeholder-text { color: rgba(255,255,255,0.25); font-size: 0.95rem; }
         .pkm-selected-display .clear-btn {
             margin-left: auto;
             background: rgba(230,57,70,0.3); border: none; color: #e63946;
-            border-radius: 50%; width: 26px; height: 26px; font-size: 0.75rem;
+            border-radius: 50%; width: 30px; height: 30px; font-size: 0.8rem;
             cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
+
+        /* Dropdown — grid maior no mobile */
         .pkm-dropdown {
             display: none; position: absolute; left: 0; right: 0; z-index: 1000;
             background: #16213e; border: 1px solid rgba(255,255,255,0.15);
             border-top: none; border-radius: 0 0 14px 14px;
-            max-height: 260px; overflow-y: auto; padding: 8px;
+            max-height: 320px; overflow-y: auto; padding: 10px;
             scrollbar-width: thin; scrollbar-color: #f0c040 transparent;
         }
-        .pkm-dropdown.open { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 5px; }
+        .pkm-dropdown.open {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 7px;
+        }
+        @media (max-width: 480px) {
+            .pkm-dropdown.open {
+                grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+                max-height: 280px;
+            }
+        }
+
         .pkm-card {
             display: flex; flex-direction: column; align-items: center;
-            padding: 5px 3px; border-radius: 9px; cursor: pointer;
+            padding: 8px 4px; border-radius: 10px; cursor: pointer;
             border: 2px solid transparent; background: rgba(255,255,255,0.04);
             transition: all 0.12s; text-align: center;
-            min-height: 70px; justify-content: center;
+            min-height: 85px; justify-content: center;
         }
         .pkm-card:hover, .pkm-card:active { background: rgba(240,192,64,0.15); border-color: rgba(240,192,64,0.5); }
         .pkm-card.selected { background: rgba(240,192,64,0.2); border-color: #f0c040; }
         .pkm-card.hidden { display: none; }
         .pkm-card.disabled { opacity: 0.2; pointer-events: none; }
-        .pkm-card img { width: 44px; height: 44px; image-rendering: pixelated; }
+
+        .pkm-card img {
+            width: 56px; height: 56px;
+            image-rendering: pixelated;
+        }
+        @media (max-width: 480px) {
+            .pkm-card img { width: 52px; height: 52px; }
+        }
+
         .pkm-card span {
-            font-size: 0.58rem; color: rgba(255,255,255,0.65);
-            margin-top: 3px; line-height: 1.2;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60px;
+            font-size: 0.65rem; color: rgba(255,255,255,0.7);
+            margin-top: 4px; line-height: 1.2;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            max-width: 74px;
         }
         .pkm-card.selected span { color: #f0c040; }
         .pkm-real-select { display: none !important; }
         .no-results {
             display: none; color: rgba(255,255,255,0.35);
-            font-size: 0.85rem; text-align: center; padding: 20px; grid-column: 1 / -1;
+            font-size: 0.9rem; text-align: center; padding: 20px; grid-column: 1 / -1;
         }
 
         /* ── BOTÕES FIXOS ── */
@@ -135,21 +158,21 @@
             position: fixed; bottom: 0; left: 0; right: 0;
             background: rgba(26,26,46,0.96); backdrop-filter: blur(8px);
             border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 0.85rem 1rem; display: flex; gap: 0.6rem; z-index: 20;
+            padding: 0.9rem 1rem; display: flex; gap: 0.6rem; z-index: 20;
         }
         .btn-cancelar {
             flex: 1; background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);
-            border-radius: 12px; padding: 0.7rem; font-weight: 700;
-            font-family: 'Nunito', sans-serif; font-size: 0.95rem;
+            border-radius: 12px; padding: 0.8rem; font-weight: 700;
+            font-family: 'Nunito', sans-serif; font-size: 1rem;
             text-align: center; text-decoration: none; transition: background 0.15s;
         }
         .btn-cancelar:hover { background: rgba(255,255,255,0.12); color: #fff; }
         .btn-salvar {
             flex: 2; background: linear-gradient(135deg, #e63946, #c1121f);
             border: none; color: #fff; font-weight: 800;
-            border-radius: 12px; padding: 0.7rem;
-            font-family: 'Nunito', sans-serif; font-size: 0.95rem;
+            border-radius: 12px; padding: 0.8rem;
+            font-family: 'Nunito', sans-serif; font-size: 1rem;
             box-shadow: 0 4px 15px rgba(230,57,70,0.4); cursor: pointer;
         }
     </style>
