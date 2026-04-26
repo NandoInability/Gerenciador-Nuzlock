@@ -39,7 +39,7 @@
             text-transform: uppercase; letter-spacing: 0.5px;
             margin-bottom: 0.35rem; display: block;
         }
-        .form-control, .form-select {
+        .form-control {
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
             color: #fff; border-radius: 10px; width: 100%;
@@ -47,13 +47,12 @@
             font-family: 'Nunito', sans-serif; font-size: 1.05rem;
             transition: border-color 0.2s;
         }
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             outline: none; border-color: #f0c040;
             background: rgba(255,255,255,0.1);
             box-shadow: 0 0 0 3px rgba(240,192,64,0.15);
         }
         .form-control::placeholder { color: rgba(255,255,255,0.25); }
-        .form-select option { background: #16213e; color: #fff; }
 
         .player-fieldset {
             background: rgba(255,255,255,0.03);
@@ -77,7 +76,7 @@
             text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
         }
 
-        /* ── PICKER VISUAL ── */
+        /* ── PICKER VISUAL GENÉRICO ── */
         .picker-wrapper { position: relative; margin-bottom: 0.75rem; }
         .picker-search-wrap { position: relative; }
         .picker-search-icon {
@@ -89,30 +88,33 @@
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 10px 10px 0 0; color: #fff;
-            padding: 0.8rem 0.9rem 0.8rem 2.6rem;
-            width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.05rem;
+            padding: 0.75rem 0.9rem 0.75rem 2.6rem;
+            width: 100%; font-family: 'Nunito', sans-serif; font-size: 1rem;
             outline: none; transition: border-color 0.2s;
         }
         .picker-search-input:focus { border-color: #f0c040; }
         .picker-search-input::placeholder { color: rgba(255,255,255,0.25); }
 
         .picker-selected-display {
-            display: flex; align-items: center; gap: 12px;
+            display: flex; align-items: center; gap: 10px;
             background: rgba(240,192,64,0.1);
             border: 1px solid rgba(240,192,64,0.35);
             border-top: none; border-radius: 0 0 10px 10px;
-            padding: 0.65rem 1rem; min-height: 60px; cursor: pointer;
+            padding: 0.55rem 0.9rem; min-height: 56px; cursor: pointer;
         }
-        .picker-selected-display img {
-            height: 48px; width: auto; max-width: 80px;
-            object-fit: cover; border-radius: 5px; flex-shrink: 0;
+        .picker-selected-display img.pkm-img {
+            width: 44px; height: 44px; image-rendering: pixelated; flex-shrink: 0;
         }
-        .picker-selected-display .selected-name { color: #f0c040; font-weight: 700; font-size: 1.05rem; }
-        .picker-selected-display .placeholder-text { color: rgba(255,255,255,0.25); font-size: 0.95rem; }
+        .picker-selected-display img.game-img {
+            height: 44px; width: auto; max-width: 72px;
+            object-fit: cover; border-radius: 4px; flex-shrink: 0;
+        }
+        .picker-selected-display .selected-name { color: #f0c040; font-weight: 700; font-size: 1rem; }
+        .picker-selected-display .placeholder-text { color: rgba(255,255,255,0.25); font-size: 0.9rem; }
         .picker-selected-display .clear-btn {
             margin-left: auto;
             background: rgba(230,57,70,0.3); border: none; color: #e63946;
-            border-radius: 50%; width: 30px; height: 30px; font-size: 0.8rem;
+            border-radius: 50%; width: 28px; height: 28px; font-size: 0.75rem;
             cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
 
@@ -120,56 +122,125 @@
             display: none; position: absolute; left: 0; right: 0; z-index: 1000;
             background: #16213e; border: 1px solid rgba(255,255,255,0.15);
             border-top: none; border-radius: 0 0 14px 14px;
-            max-height: 300px; overflow-y: auto; padding: 10px;
+            max-height: 280px; overflow-y: auto; padding: 8px;
             scrollbar-width: thin; scrollbar-color: #f0c040 transparent;
         }
-        /* Grid pokémon */
         .picker-dropdown.open {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 7px;
+            grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+            gap: 6px;
         }
-        /* Grid jogos — cards maiores com capa */
         .picker-dropdown.jogo-dropdown.open {
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         }
 
         .picker-card {
             display: flex; flex-direction: column; align-items: center;
-            padding: 8px 4px; border-radius: 10px; cursor: pointer;
+            padding: 6px 3px; border-radius: 10px; cursor: pointer;
             border: 2px solid transparent; background: rgba(255,255,255,0.04);
             transition: all 0.12s; text-align: center;
-            min-height: 85px; justify-content: center;
+            min-height: 80px; justify-content: center;
         }
         .picker-card:hover, .picker-card:active { background: rgba(240,192,64,0.15); border-color: rgba(240,192,64,0.5); }
         .picker-card.selected { background: rgba(240,192,64,0.2); border-color: #f0c040; }
         .picker-card.hidden { display: none; }
+        .picker-card.disabled { opacity: 0.2; pointer-events: none; }
 
-        /* Sprite pokémon */
         .picker-card img.pkm-img {
-            width: 56px; height: 56px; image-rendering: pixelated; object-fit: contain;
+            width: 52px; height: 52px; image-rendering: pixelated; object-fit: contain;
         }
-        /* Capa jogo */
-        .jogo-dropdown .picker-card { min-height: 110px; padding: 6px; }
+        .jogo-dropdown .picker-card { min-height: 105px; padding: 5px; }
         .picker-card img.game-img {
-            width: 120px; height: 80px;
-            object-fit: cover; border-radius: 6px;
-            image-rendering: auto;
+            width: 110px; height: 74px;
+            object-fit: cover; border-radius: 6px; image-rendering: auto;
         }
-
         .picker-card span {
-            font-size: 0.65rem; color: rgba(255,255,255,0.7);
-            margin-top: 4px; line-height: 1.3;
+            font-size: 0.62rem; color: rgba(255,255,255,0.7);
+            margin-top: 3px; line-height: 1.2;
             overflow: hidden; text-overflow: ellipsis;
             display: -webkit-box; -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            max-width: 120px;
+            -webkit-box-orient: vertical; max-width: 110px;
         }
         .picker-card.selected span { color: #f0c040; }
         .picker-real-select { display: none !important; }
         .no-results {
             display: none; color: rgba(255,255,255,0.35);
-            font-size: 0.9rem; text-align: center; padding: 20px; grid-column: 1 / -1;
+            font-size: 0.85rem; text-align: center; padding: 16px; grid-column: 1 / -1;
+        }
+
+        /* ── OPÇÕES DE SORTEIO — mini picker horizontal ── */
+        .opcoes-sorteio { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.85rem; }
+        .opcao-label { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.5);
+            text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 0.2rem; }
+
+        /* Mini picker de sorteio — busca + selected inline */
+        .mini-picker { position: relative; }
+        .mini-picker-search-wrap { position: relative; }
+        .mini-picker-icon {
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            color: rgba(255,255,255,0.3); pointer-events: none; font-size: 0.85rem;
+        }
+        .mini-picker-input {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px 8px 0 0; color: #fff;
+            padding: 0.55rem 0.7rem 0.55rem 2.1rem;
+            width: 100%; font-family: 'Nunito', sans-serif; font-size: 0.9rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        .mini-picker-input:focus { border-color: #f0c040; }
+        .mini-picker-input::placeholder { color: rgba(255,255,255,0.2); }
+
+        .mini-picker-display {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-top: none; border-radius: 0 0 8px 8px;
+            padding: 0.4rem 0.7rem; min-height: 46px; cursor: pointer;
+        }
+        .mini-picker-display img {
+            width: 34px; height: 34px; image-rendering: pixelated; flex-shrink: 0;
+        }
+        .mini-picker-display .mini-selected-name { color: #f0c040; font-weight: 700; font-size: 0.9rem; }
+        .mini-picker-display .mini-placeholder { color: rgba(255,255,255,0.2); font-size: 0.85rem; }
+        .mini-picker-display .mini-clear {
+            margin-left: auto; background: rgba(230,57,70,0.25); border: none; color: #e63946;
+            border-radius: 50%; width: 22px; height: 22px; font-size: 0.65rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .mini-picker-dropdown {
+            display: none; position: absolute; left: 0; right: 0; z-index: 1000;
+            background: #16213e; border: 1px solid rgba(255,255,255,0.15);
+            border-top: none; border-radius: 0 0 12px 12px;
+            max-height: 260px; overflow-y: auto; padding: 7px;
+            scrollbar-width: thin; scrollbar-color: #f0c040 transparent;
+        }
+        .mini-picker-dropdown.open {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+            gap: 5px;
+        }
+        .mini-pkm-card {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px 3px; border-radius: 8px; cursor: pointer;
+            border: 2px solid transparent; background: rgba(255,255,255,0.04);
+            transition: all 0.12s; text-align: center;
+            min-height: 72px; justify-content: center;
+        }
+        .mini-pkm-card:hover, .mini-pkm-card:active { background: rgba(240,192,64,0.15); border-color: rgba(240,192,64,0.5); }
+        .mini-pkm-card.selected { background: rgba(240,192,64,0.2); border-color: #f0c040; }
+        .mini-pkm-card.hidden { display: none; }
+        .mini-pkm-card img { width: 48px; height: 48px; image-rendering: pixelated; }
+        .mini-pkm-card span {
+            font-size: 0.58rem; color: rgba(255,255,255,0.65);
+            margin-top: 2px; line-height: 1.2;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 64px;
+        }
+        .mini-pkm-card.selected span { color: #f0c040; }
+        .mini-no-results {
+            display: none; color: rgba(255,255,255,0.3);
+            font-size: 0.8rem; text-align: center; padding: 14px; grid-column: 1 / -1;
         }
 
         /* Resultado sorteio */
@@ -258,7 +329,7 @@
         <div class="mb-3">
             <label class="form-label">📛 Nome da Run</label>
             <input type="text" class="form-control" th:field="*{nomeDaRun}"
-                   placeholder="oq tu quiser" required>
+                   placeholder="Ex: Minha primeira tentativa!" required>
         </div>
 
         <!-- Nicknames -->
@@ -278,31 +349,56 @@
         <!-- Jogador 1 -->
         <fieldset class="player-fieldset border">
             <legend class="float-none w-auto px-2">🎮 Jogador 1 — Inicial</legend>
-            <div class="row g-2 mb-3">
-                <div class="col-4">
-                    <label class="form-label">Opção 1</label>
-                    <select class="form-select starter-p1-option" id="starter-p1-opt1">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+
+            <!-- Hidden inputs para guardar ids sorteáveis -->
+            <input type="hidden" class="pkm-sorteio-p1" id="p1-opt1-val">
+            <input type="hidden" class="pkm-sorteio-p1-name" id="p1-opt1-name">
+            <input type="hidden" class="pkm-sorteio-p1" id="p1-opt2-val">
+            <input type="hidden" class="pkm-sorteio-p1-name" id="p1-opt2-name">
+            <input type="hidden" class="pkm-sorteio-p1" id="p1-opt3-val">
+            <input type="hidden" class="pkm-sorteio-p1-name" id="p1-opt3-name">
+
+            <div class="opcoes-sorteio">
+                <!-- Opção 1 -->
+                <div>
+                    <div class="opcao-label">Opção 1</div>
+                    <div class="mini-picker" data-val="p1-opt1-val" data-name="p1-opt1-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <label class="form-label">Opção 2</label>
-                    <select class="form-select starter-p1-option" id="starter-p1-opt2">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+                <!-- Opção 2 -->
+                <div>
+                    <div class="opcao-label">Opção 2</div>
+                    <div class="mini-picker" data-val="p1-opt2-val" data-name="p1-opt2-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <label class="form-label">Opção 3</label>
-                    <select class="form-select starter-p1-option" id="starter-p1-opt3">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+                <!-- Opção 3 -->
+                <div>
+                    <div class="opcao-label">Opção 3</div>
+                    <div class="mini-picker" data-val="p1-opt3-val" data-name="p1-opt3-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
             </div>
+
             <div class="text-center">
-                <button type="button" class="btn-sortear" id="sortear-p1-btn">Sortear</button>
+                <button type="button" class="btn-sortear" id="sortear-p1-btn">🎲 Sortear!</button>
             </div>
             <div id="resultado-p1"></div>
         </fieldset>
@@ -312,31 +408,52 @@
         <!-- Jogador 2 -->
         <fieldset class="player-fieldset border">
             <legend class="float-none w-auto px-2">🎮 Jogador 2 — Inicial</legend>
-            <div class="row g-2 mb-3">
-                <div class="col-4">
-                    <label class="form-label">Opção 1</label>
-                    <select class="form-select starter-p2-option" id="starter-p2-opt1">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+
+            <input type="hidden" class="pkm-sorteio-p2" id="p2-opt1-val">
+            <input type="hidden" class="pkm-sorteio-p2-name" id="p2-opt1-name">
+            <input type="hidden" class="pkm-sorteio-p2" id="p2-opt2-val">
+            <input type="hidden" class="pkm-sorteio-p2-name" id="p2-opt2-name">
+            <input type="hidden" class="pkm-sorteio-p2" id="p2-opt3-val">
+            <input type="hidden" class="pkm-sorteio-p2-name" id="p2-opt3-name">
+
+            <div class="opcoes-sorteio">
+                <div>
+                    <div class="opcao-label">Opção 1</div>
+                    <div class="mini-picker" data-val="p2-opt1-val" data-name="p2-opt1-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <label class="form-label">Opção 2</label>
-                    <select class="form-select starter-p2-option" id="starter-p2-opt2">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+                <div>
+                    <div class="opcao-label">Opção 2</div>
+                    <div class="mini-picker" data-val="p2-opt2-val" data-name="p2-opt2-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <label class="form-label">Opção 3</label>
-                    <select class="form-select starter-p2-option" id="starter-p2-opt3">
-                        <option value="">—</option>
-                        <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
+                <div>
+                    <div class="opcao-label">Opção 3</div>
+                    <div class="mini-picker" data-val="p2-opt3-val" data-name="p2-opt3-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
                 </div>
             </div>
+
             <div class="text-center">
-                <button type="button" class="btn-sortear" id="sortear-p2-btn">Sortear</button>
+                <button type="button" class="btn-sortear" id="sortear-p2-btn">🎲 Sortear!</button>
             </div>
             <div id="resultado-p2"></div>
         </fieldset>
@@ -352,7 +469,9 @@
 </div>
 
 <script th:inline="javascript">
-    // ── Picker visual de jogos ──
+    const allPokemons = /*[[${pokemons}]]*/ [];
+
+    // ── PICKER DE JOGO ──
     document.querySelectorAll('.picker-wrapper').forEach(wrapper => {
         const targetId        = wrapper.dataset.target;
         const isJogo          = wrapper.dataset.type === 'jogo';
@@ -369,29 +488,32 @@
             card.dataset.name = opt.text.toLowerCase();
             const sprite = opt.dataset.sprite || '';
             const imgClass = isJogo ? 'game-img' : 'pkm-img';
-            const imgTag = sprite
-                ? `<img src="${sprite}" alt="${opt.text}" class="${imgClass}" onerror="this.style.display='none'">`
-                : '';
+            const imgTag = sprite ? `<img src="${sprite}" alt="${opt.text}" class="${imgClass}" onerror="this.style.display='none'">` : '';
             card.innerHTML = `${imgTag}<span>${opt.text}</span>`;
-            card.addEventListener('click', () => selectItem(wrapper, realSelect, card, opt.value, opt.text, sprite, isJogo));
+            card.addEventListener('click', () => {
+                realSelect.value = opt.value;
+                realSelect.dispatchEvent(new Event('change'));
+                setPickerDisplay(selectedDisplay, opt.text, sprite, imgClass);
+                wrapper.querySelectorAll('.picker-card').forEach(c => c.classList.toggle('selected', c === card));
+                dropdown.classList.remove('open');
+                searchInput.value = '';
+                wrapper.querySelectorAll('.picker-card').forEach(c => c.classList.remove('hidden'));
+            });
             dropdown.appendChild(card);
         });
 
         searchInput.addEventListener('input', () => {
             const q = searchInput.value.toLowerCase().trim();
-            let visible = 0;
+            let v = 0;
             dropdown.querySelectorAll('.picker-card').forEach(c => {
-                const match = c.dataset.name.includes(q);
-                c.classList.toggle('hidden', !match);
-                if (match) visible++;
+                const m = c.dataset.name.includes(q);
+                c.classList.toggle('hidden', !m);
+                if (m) v++;
             });
-            noResults.style.display = visible === 0 ? 'block' : 'none';
+            noResults.style.display = v === 0 ? 'block' : 'none';
         });
-
         searchInput.addEventListener('focus', () => dropdown.classList.add('open'));
-        document.addEventListener('click', e => {
-            if (!wrapper.contains(e.target)) dropdown.classList.remove('open');
-        });
+        document.addEventListener('click', e => { if (!wrapper.contains(e.target)) dropdown.classList.remove('open'); });
         selectedDisplay.addEventListener('click', () => {
             dropdown.classList.toggle('open');
             if (dropdown.classList.contains('open')) searchInput.focus();
@@ -400,43 +522,93 @@
         const currentVal = realSelect.value;
         if (currentVal) {
             const opt = realSelect.options[realSelect.selectedIndex];
-            setDisplay(selectedDisplay, opt.text, opt.dataset.sprite || '', isJogo);
-            dropdown.querySelectorAll('.picker-card').forEach(c =>
-                c.classList.toggle('selected', c.dataset.id === currentVal));
+            const imgClass = isJogo ? 'game-img' : 'pkm-img';
+            setPickerDisplay(selectedDisplay, opt.text, opt.dataset.sprite || '', imgClass);
+            dropdown.querySelectorAll('.picker-card').forEach(c => c.classList.toggle('selected', c.dataset.id === currentVal));
         }
     });
 
-    function selectItem(wrapper, realSelect, card, id, name, sprite, isJogo) {
-        realSelect.value = id;
-        realSelect.dispatchEvent(new Event('change'));
-        setDisplay(wrapper.querySelector('.picker-selected-display'), name, sprite, isJogo);
-        wrapper.querySelectorAll('.picker-card').forEach(c => c.classList.toggle('selected', c === card));
-        wrapper.querySelector('.picker-dropdown').classList.remove('open');
-        wrapper.querySelector('.picker-search-input').value = '';
-        wrapper.querySelectorAll('.picker-card').forEach(c => c.classList.remove('hidden'));
-    }
-
-    function setDisplay(display, name, sprite, isJogo) {
-        const imgClass = isJogo ? 'game-img' : 'pkm-img';
-        const imgTag = sprite
-            ? `<img src="${sprite}" alt="${name}" class="${imgClass}" onerror="this.style.display='none'">`
-            : '';
-        display.innerHTML = `
-            ${imgTag}
-            <span class="selected-name">${name}</span>
-            <button type="button" class="clear-btn" title="Limpar">✕</button>`;
+    function setPickerDisplay(display, name, sprite, imgClass) {
+        const imgTag = sprite ? `<img src="${sprite}" alt="${name}" class="${imgClass}" onerror="this.style.display='none'">` : '';
+        display.innerHTML = `${imgTag}<span class="selected-name">${name}</span><button type="button" class="clear-btn">✕</button>`;
         display.querySelector('.clear-btn').addEventListener('click', e => {
             e.stopPropagation();
-            const wrapper    = display.closest('.picker-wrapper');
-            const realSelect = document.getElementById(wrapper.dataset.target);
-            realSelect.value = '';
-            realSelect.dispatchEvent(new Event('change'));
+            const wrapper = display.closest('.picker-wrapper');
+            const rs = document.getElementById(wrapper.dataset.target);
+            rs.value = '';
+            rs.dispatchEvent(new Event('change'));
             display.innerHTML = '<span class="placeholder-text">Nenhum selecionado</span>';
             wrapper.querySelectorAll('.picker-card').forEach(c => c.classList.remove('selected'));
         });
     }
 
-    // ── Sorteio ──
+    // ── MINI PICKER DE POKÉMON (sorteio) ──
+    document.querySelectorAll('.mini-picker').forEach(picker => {
+        const valId       = picker.dataset.val;
+        const nameId      = picker.dataset.name;
+        const valInput    = document.getElementById(valId);
+        const nameInput   = document.getElementById(nameId);
+        const searchInput = picker.querySelector('.mini-picker-input');
+        const display     = picker.querySelector('.mini-picker-display');
+        const dropdown    = picker.querySelector('.mini-picker-dropdown');
+        const noResults   = picker.querySelector('.mini-no-results');
+
+        // Popula cards com todos os pokémons
+        allPokemons.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'mini-pkm-card';
+            card.dataset.id   = p.id;
+            card.dataset.name = p.name.toLowerCase();
+            const sprite = p.sprite || '';
+            card.innerHTML = `<img src="${sprite}" alt="${p.name}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'"><span>${p.name}</span>`;
+            card.addEventListener('click', () => {
+                valInput.value  = p.id;
+                nameInput.value = p.name;
+                setMiniDisplay(display, p.name, sprite);
+                picker.querySelectorAll('.mini-pkm-card').forEach(c => c.classList.toggle('selected', c === card));
+                dropdown.classList.remove('open');
+                searchInput.value = '';
+                picker.querySelectorAll('.mini-pkm-card').forEach(c => c.classList.remove('hidden'));
+            });
+            dropdown.appendChild(card);
+        });
+
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.toLowerCase().trim();
+            let v = 0;
+            dropdown.querySelectorAll('.mini-pkm-card').forEach(c => {
+                const m = c.dataset.name.includes(q);
+                c.classList.toggle('hidden', !m);
+                if (m) v++;
+            });
+            noResults.style.display = v === 0 ? 'block' : 'none';
+        });
+        searchInput.addEventListener('focus', () => dropdown.classList.add('open'));
+        document.addEventListener('click', e => { if (!picker.contains(e.target)) dropdown.classList.remove('open'); });
+        display.addEventListener('click', () => {
+            dropdown.classList.toggle('open');
+            if (dropdown.classList.contains('open')) searchInput.focus();
+        });
+    });
+
+    function setMiniDisplay(display, name, sprite) {
+        display.innerHTML = `
+            <img src="${sprite}" alt="${name}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+            <span class="mini-selected-name">${name}</span>
+            <button type="button" class="mini-clear">✕</button>`;
+        display.querySelector('.mini-clear').addEventListener('click', e => {
+            e.stopPropagation();
+            const picker   = display.closest('.mini-picker');
+            const valInput  = document.getElementById(picker.dataset.val);
+            const nameInput = document.getElementById(picker.dataset.name);
+            valInput.value  = '';
+            nameInput.value = '';
+            display.innerHTML = '<span class="mini-placeholder">Nenhum</span>';
+            picker.querySelectorAll('.mini-pkm-card').forEach(c => c.classList.remove('selected'));
+        });
+    }
+
+    // ── SORTEIO ──
     const escolhaInputP1 = document.getElementById('starter-p1-choice');
     const escolhaInputP2 = document.getElementById('starter-p2-choice');
     const saveRunBtn     = document.getElementById('save-run-btn');
@@ -452,16 +624,18 @@
                 <div class="result-name">${name}</div>
             </div>`;
     }
-
     function showError(divId, msg) {
         document.getElementById(divId).innerHTML =
             `<div class="resultado-box"><div class="result-error">${msg}</div></div>`;
     }
 
-    function sortear(selectorClass, resultDivId, hiddenInput) {
+    function sortear(valClass, nameClass, resultDivId, hiddenInput) {
         const opts = [];
-        document.querySelectorAll('.' + selectorClass).forEach(sel => {
-            if (sel.value) opts.push({ id: sel.value, name: sel.options[sel.selectedIndex].text });
+        document.querySelectorAll('.' + valClass).forEach((inp, i) => {
+            if (inp.value) {
+                const nameInps = document.querySelectorAll('.' + nameClass);
+                opts.push({ id: inp.value, name: nameInps[i].value });
+            }
         });
         if (!opts.length) { showError(resultDivId, 'Selecione pelo menos uma opção!'); return; }
         const sorteado = opts[Math.floor(Math.random() * opts.length)];
@@ -471,9 +645,9 @@
     }
 
     document.getElementById('sortear-p1-btn').addEventListener('click', () =>
-        sortear('starter-p1-option', 'resultado-p1', escolhaInputP1));
+        sortear('pkm-sorteio-p1', 'pkm-sorteio-p1-name', 'resultado-p1', escolhaInputP1));
     document.getElementById('sortear-p2-btn').addEventListener('click', () =>
-        sortear('starter-p2-option', 'resultado-p2', escolhaInputP2));
+        sortear('pkm-sorteio-p2', 'pkm-sorteio-p2-name', 'resultado-p2', escolhaInputP2));
 </script>
 </body>
 </html>
