@@ -24,16 +24,15 @@
         .site-header {
             background: rgba(255,255,255,0.03);
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 1.25rem 1rem;
+            padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
+            gap: 1rem;
         }
         .site-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: clamp(0.55rem, 3vw, 0.9rem);
+            font-size: clamp(0.55rem, 2vw, 0.9rem);
             color: #f0c040;
             text-shadow: 2px 2px 0 #b8860b, 4px 4px 0 #8b6914;
             line-height: 1.9;
@@ -41,7 +40,7 @@
         }
         .site-sub {
             color: rgba(255,255,255,0.4);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             margin-top: 0.1rem;
         }
@@ -53,28 +52,40 @@
             font-family: 'Nunito', sans-serif;
             font-size: 0.9rem;
             border-radius: 12px;
-            padding: 0.6rem 1.25rem;
+            padding: 0.65rem 1.4rem;
             box-shadow: 0 4px 15px rgba(230,57,70,0.4);
             text-decoration: none;
             transition: all 0.2s;
             white-space: nowrap;
         }
-        .btn-nova-run:hover { transform: translateY(-2px); color: #fff; }
+        .btn-nova-run:hover { transform: translateY(-2px); color: #fff; box-shadow: 0 6px 20px rgba(230,57,70,0.55); }
 
         /* ── CONTENT ── */
         .content-wrap {
-            max-width: 680px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1.25rem 0.85rem 4rem;
+            padding: 1.5rem 1.25rem 4rem;
         }
-
         .section-label {
             font-family: 'Press Start 2P', monospace;
             font-size: 0.55rem;
             color: rgba(255,255,255,0.3);
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        /* ── GRID: 1 col → 2 col → 3 col ── */
+        .runs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 560px) {
+            .runs-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 900px) {
+            .runs-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         /* ── RUN CARD ── */
@@ -83,144 +94,95 @@
             border: 1px solid rgba(255,255,255,0.09);
             border-radius: 18px;
             overflow: hidden;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
         }
-        .run-card:active {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            border-color: rgba(240,192,64,0.25);
+        .run-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+            border-color: rgba(240,192,64,0.3);
         }
 
-        /* capa */
         .game-cover {
             position: relative;
-            height: 140px;
+            height: 130px;
             overflow: hidden;
             background: linear-gradient(135deg, #0f3460, #16213e);
+            flex-shrink: 0;
         }
         .game-cover img {
             width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center top;
+            object-fit: cover; object-position: center top;
             display: block;
         }
         .cover-overlay {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(to bottom, transparent 30%, rgba(26,26,46,0.95) 100%);
         }
         .game-badge {
-            position: absolute;
-            bottom: 10px; left: 12px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.85);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            position: absolute; bottom: 9px; left: 12px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
+            padding: 3px 11px; font-size: 0.65rem; font-weight: 700;
+            color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        /* corpo */
         .run-body {
-            padding: 0.9rem 1rem 0.75rem;
+            padding: 0.85rem 1rem 0.6rem;
+            flex: 1;
         }
         .run-name {
-            font-weight: 800;
-            font-size: 1.15rem;
-            color: #fff;
-            margin-bottom: 0.3rem;
-            line-height: 1.3;
+            font-weight: 800; font-size: 1.05rem; color: #fff;
+            margin-bottom: 0.25rem; line-height: 1.3;
         }
-        .run-players {
-            color: #f0c040;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
+        .run-players { color: #f0c040; font-size: 0.82rem; font-weight: 700; }
         .run-players .sep { color: rgba(255,255,255,0.3); font-weight: 400; }
 
-        /* rodapé */
         .run-footer {
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
             border-top: 1px solid rgba(255,255,255,0.07);
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
+            display: flex; gap: 0.45rem; align-items: center;
         }
-        /* Ver Detalhes ocupa o espaço todo à esquerda */
         .btn-detalhes {
-            flex: 1;
-            text-align: center;
+            flex: 1; text-align: center;
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.15);
-            color: rgba(255,255,255,0.8);
-            border-radius: 10px;
-            padding: 0.55rem 0;
-            font-size: 0.85rem;
-            font-weight: 700;
-            font-family: 'Nunito', sans-serif;
-            text-decoration: none;
+            color: rgba(255,255,255,0.8); border-radius: 9px;
+            padding: 0.5rem 0; font-size: 0.82rem; font-weight: 700;
+            font-family: 'Nunito', sans-serif; text-decoration: none;
             transition: background 0.15s;
         }
         .btn-detalhes:hover { background: rgba(255,255,255,0.13); color: #fff; }
 
+        .btn-icon {
+            border-radius: 9px; padding: 0.5rem 0.75rem;
+            font-size: 0.95rem; cursor: pointer;
+            font-family: 'Nunito', sans-serif; font-weight: 700;
+            text-decoration: none; display: inline-flex;
+            align-items: center; justify-content: center;
+            border: 1px solid transparent; transition: background 0.15s;
+            line-height: 1;
+        }
         .btn-editar {
             background: rgba(59,130,246,0.15);
-            border: 1px solid rgba(59,130,246,0.35);
-            color: #60a5fa;
-            border-radius: 10px;
-            padding: 0.55rem 0.9rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            font-family: 'Nunito', sans-serif;
-            text-decoration: none;
-            transition: background 0.15s;
-            white-space: nowrap;
+            border-color: rgba(59,130,246,0.35); color: #60a5fa;
         }
         .btn-editar:hover { background: rgba(59,130,246,0.3); color: #93c5fd; }
-
         .btn-deletar {
             background: rgba(230,57,70,0.12);
-            border: 1px solid rgba(230,57,70,0.28);
-            color: #e63946;
-            border-radius: 10px;
-            padding: 0.55rem 0.9rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            font-family: 'Nunito', sans-serif;
-            cursor: pointer;
-            transition: background 0.15s;
-            white-space: nowrap;
+            border-color: rgba(230,57,70,0.28); color: #e63946;
         }
         .btn-deletar:hover { background: rgba(230,57,70,0.25); }
 
         /* ── EMPTY STATE ── */
-        .empty-state {
-            text-align: center;
-            padding: 5rem 1rem;
-        }
+        .empty-state { text-align: center; padding: 5rem 1rem; }
         .empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
         .empty-title {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.35);
-            line-height: 2;
-            margin-bottom: 0.75rem;
+            font-family: 'Press Start 2P', monospace; font-size: 0.65rem;
+            color: rgba(255,255,255,0.35); line-height: 2; margin-bottom: 0.75rem;
         }
         .empty-sub { color: rgba(255,255,255,0.25); font-size: 0.85rem; }
-
-        /* desktop: 2 colunas a partir de 600px */
-        @media (min-width: 600px) {
-            .runs-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-            .run-card { margin-bottom: 0; }
-        }
     </style>
 </head>
 <body>
@@ -258,10 +220,10 @@
 
             <div class="run-footer">
                 <a th:href="@{/runs/{id}(id=${run.id})}" class="btn-detalhes">Ver Detalhes</a>
-                <a th:href="@{/runs/{id}/editar(id=${run.id})}" class="btn-editar">✏️</a>
+                <a th:href="@{/runs/{id}/editar(id=${run.id})}" class="btn-icon btn-editar" title="Editar">✏️</a>
                 <form th:action="@{/runs/{id}/deletar(id=${run.id})}" method="post" class="d-inline">
                     <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" class="btn-deletar"
+                    <button type="submit" class="btn-icon btn-deletar" title="Deletar"
                             onclick="return confirm('Deletar esta run?');">🗑</button>
                 </form>
             </div>
@@ -276,6 +238,5 @@
     </div>
 
 </div>
-
 </body>
 </html>
