@@ -12,7 +12,7 @@ import java.util.List;
 public class DashController {
     @Autowired
     private RunsSLService runsSLController;
-    @GetMapping("/")
+    @GetMapping({"/", "/dashboard"})
     public String dash(Model model) {
         List<RunsSL> todasAsRuns = runsSLController.findAll();
         model.addAttribute("runs", todasAsRuns);
