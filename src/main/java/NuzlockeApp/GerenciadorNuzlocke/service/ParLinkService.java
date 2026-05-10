@@ -17,34 +17,35 @@ public class ParLinkService {
     private RepPar parLinkRepository;
 
     public ParLink save(ParLink par) {
-        // Lógica futura: verificar se os pokémons do par são válidos, etc.
-        PKMCapturado pkmCapturado1 = par.getPkm1();
-        PKMCapturado pkmCapturado2 = par.getPkm2();
-        if (pkmCapturado1 == null || pkmCapturado1.getEspecie() == null ||
-                pkmCapturado2 == null || pkmCapturado2.getEspecie() == null) {
-            throw new IllegalArgumentException("Ambos os Pokémon do par devem ser válidos e ter uma espécie definida.");
+        PKMCapturado pkm1 = par.getPkm1();
+        PKMCapturado pkm2 = par.getPkm2();
+        PKMCapturado pkm3 = par.getPkm3();
+        PKMCapturado pkm4 = par.getPkm4();
+
+        if (pkm1 == null || pkm1.getEspecie() == null ||
+                pkm2 == null || pkm2.getEspecie() == null) {
+            throw new IllegalArgumentException("Os Pokémon dos jogadores 1 e 2 são obrigatórios.");
         }
 
-        Pokemon especie1 = pkmCapturado1.getEspecie();
-        Pokemon especie2 = pkmCapturado2.getEspecie();
+        // Coleta todas as espécies presentes no par para validação cruzada
+        List<PKMCapturado> todos = new java.util.ArrayList<>();
+        todos.add(pkm1); todos.add(pkm2);
+        if (pkm3 != null && pkm3.getEspecie() != null) todos.add(pkm3);
+        if (pkm4 != null && pkm4.getEspecie() != null) todos.add(pkm4);
 
-        // 2. Validação: Não podem ser o mesmo Pokémon (espécie)
-        if (Objects.equals(especie1.getId(), especie2.getId())) {
-            throw new IllegalArgumentException("Os Pokémon no par não podem ser da mesma espécie.");
+        for (int i = 0; i < todos.size(); i++) {
+            for (int j = i + 1; j < todos.size(); j++) {
+                Pokemon e1 = todos.get(i).getEspecie();
+                Pokemon e2 = todos.get(j).getEspecie();
+                if (Objects.equals(e1.getId(), e2.getId())) {
+                    throw new IllegalArgumentException("Dois Pokémon no par não podem ser da mesma espécie.");
+                }
+                if (e1.getEvolChain() != null && Objects.equals(e1.getEvolChain(), e2.getEvolChain())) {
+                    throw new IllegalArgumentException("Dois Pokémon no par não podem ser da mesma família evolutiva.");
+                }
+            }
         }
-        // Ou, se você comparar pelo número da Pokedex:
-        // if (Objects.equals(especie1.getPkdexNumber(), especie2.getPkdexNumber())) {
-        //     throw new IllegalArgumentException("Os Pokémon no par não podem ser da mesma espécie (Pokedex Number).");
-        // }
 
-
-        // 3. Validação: Não podem ser da mesma família evolutiva
-        if (especie1.getEvolChain() != null && especie2.getEvolChain() != null &&
-                Objects.equals(especie1.getEvolChain(), especie2.getEvolChain())) {
-            throw new IllegalArgumentException("Os Pokémon no par não podem ser da mesma família evolutiva.");
-        }
-
-        // Lógica futura: verificar se os pokémons do par são válidos, etc.
         return parLinkRepository.save(par);
     }
 

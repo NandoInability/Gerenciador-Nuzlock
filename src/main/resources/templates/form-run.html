@@ -333,14 +333,31 @@
         </div>
 
         <!-- Nicknames -->
+        <div class="mb-3">
+            <label class="form-label">👥 Número de Jogadores</label>
+            <select class="form-control" id="num-jogadores" name="numJogadores">
+                <option value="2">2 Jogadores</option>
+                <option value="3">3 Jogadores</option>
+                <option value="4">4 Jogadores</option>
+            </select>
+        </div>
+
         <div class="row g-2 mb-3">
-            <div class="col-6">
-                <label class="form-label">🧑 Seu Nickname</label>
+            <div class="col-6 mb-2">
+                <label class="form-label">🧑 Nickname Jogador 1</label>
                 <input type="text" class="form-control" th:field="*{jogador1}" required>
             </div>
-            <div class="col-6">
-                <label class="form-label">🧑 Parceiro</label>
+            <div class="col-6 mb-2">
+                <label class="form-label">🧑 Nickname Jogador 2</label>
                 <input type="text" class="form-control" th:field="*{jogador2}" required>
+            </div>
+            <div class="col-6 mb-2 player3-field" style="display: none;">
+                <label class="form-label">🧑 Nickname Jogador 3</label>
+                <input type="text" class="form-control" th:field="*{jogador3}" id="jogador3-input">
+            </div>
+            <div class="col-6 mb-2 player4-field" style="display: none;">
+                <label class="form-label">🧑 Nickname Jogador 4</label>
+                <input type="text" class="form-control" th:field="*{jogador4}" id="jogador4-input">
             </div>
         </div>
 
@@ -459,6 +476,108 @@
         </fieldset>
 
         <input type="hidden" id="starter-p2-choice" name="starterP2Id" />
+        
+        <!-- Jogador 3 -->
+        <fieldset class="player-fieldset border player3-field" style="display: none;">
+            <legend class="float-none w-auto px-2">🎮 Jogador 3 — Inicial</legend>
+            <input type="hidden" class="pkm-sorteio-p3" id="p3-opt1-val">
+            <input type="hidden" class="pkm-sorteio-p3-name" id="p3-opt1-name">
+            <input type="hidden" class="pkm-sorteio-p3" id="p3-opt2-val">
+            <input type="hidden" class="pkm-sorteio-p3-name" id="p3-opt2-name">
+            <input type="hidden" class="pkm-sorteio-p3" id="p3-opt3-val">
+            <input type="hidden" class="pkm-sorteio-p3-name" id="p3-opt3-name">
+            <div class="opcoes-sorteio">
+                <div>
+                    <div class="opcao-label">Opção 1</div>
+                    <div class="mini-picker" data-val="p3-opt1-val" data-name="p3-opt1-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="opcao-label">Opção 2</div>
+                    <div class="mini-picker" data-val="p3-opt2-val" data-name="p3-opt2-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="opcao-label">Opção 3</div>
+                    <div class="mini-picker" data-val="p3-opt3-val" data-name="p3-opt3-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-sortear" id="sortear-p3-btn">🎲 Sortear!</button>
+            </div>
+            <div id="resultado-p3"></div>
+        </fieldset>
+        <input type="hidden" id="starter-p3-choice" name="starterP3Id" />
+
+        <!-- Jogador 4 -->
+        <fieldset class="player-fieldset border player4-field" style="display: none;">
+            <legend class="float-none w-auto px-2">🎮 Jogador 4 — Inicial</legend>
+            <input type="hidden" class="pkm-sorteio-p4" id="p4-opt1-val">
+            <input type="hidden" class="pkm-sorteio-p4-name" id="p4-opt1-name">
+            <input type="hidden" class="pkm-sorteio-p4" id="p4-opt2-val">
+            <input type="hidden" class="pkm-sorteio-p4-name" id="p4-opt2-name">
+            <input type="hidden" class="pkm-sorteio-p4" id="p4-opt3-val">
+            <input type="hidden" class="pkm-sorteio-p4-name" id="p4-opt3-name">
+            <div class="opcoes-sorteio">
+                <div>
+                    <div class="opcao-label">Opção 1</div>
+                    <div class="mini-picker" data-val="p4-opt1-val" data-name="p4-opt1-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="opcao-label">Opção 2</div>
+                    <div class="mini-picker" data-val="p4-opt2-val" data-name="p4-opt2-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="opcao-label">Opção 3</div>
+                    <div class="mini-picker" data-val="p4-opt3-val" data-name="p4-opt3-name">
+                        <div class="mini-picker-search-wrap">
+                            <span class="mini-picker-icon">🔍</span>
+                            <input type="text" class="mini-picker-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                        </div>
+                        <div class="mini-picker-display"><span class="mini-placeholder">Nenhum</span></div>
+                        <div class="mini-picker-dropdown"><span class="mini-no-results">Nenhum encontrado</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn-sortear" id="sortear-p4-btn">🎲 Sortear!</button>
+            </div>
+            <div id="resultado-p4"></div>
+        </fieldset>
+        <input type="hidden" id="starter-p4-choice" name="starterP4Id" />
 
     </form>
 </div>
@@ -611,10 +730,44 @@
     // ── SORTEIO ──
     const escolhaInputP1 = document.getElementById('starter-p1-choice');
     const escolhaInputP2 = document.getElementById('starter-p2-choice');
+    const escolhaInputP3 = document.getElementById('starter-p3-choice');
+    const escolhaInputP4 = document.getElementById('starter-p4-choice');
     const saveRunBtn     = document.getElementById('save-run-btn');
+    const numJogadoresSelect = document.getElementById('num-jogadores');
+
+    function togglePlayerFields() {
+        const num = parseInt(numJogadoresSelect.value);
+        
+        // Inputs de Nickname
+        document.querySelectorAll('.player3-field').forEach(el => el.style.display = num >= 3 ? '' : 'none');
+        document.querySelectorAll('.player4-field').forEach(el => el.style.display = num >= 4 ? '' : 'none');
+        
+        // Required attributes
+        document.getElementById('jogador3-input').required = (num >= 3);
+        document.getElementById('jogador4-input').required = (num >= 4);
+
+        checkIfReadyToSave();
+    }
+
+    numJogadoresSelect.addEventListener('change', togglePlayerFields);
+    
+    // Initial state check for edit mode
+    window.addEventListener('DOMContentLoaded', () => {
+        // Se já tiver jogador 3 ou 4 preenchido, ajusta o select
+        const j3 = document.getElementById('jogador3-input').value;
+        const j4 = document.getElementById('jogador4-input').value;
+        if (j4) numJogadoresSelect.value = "4";
+        else if (j3) numJogadoresSelect.value = "3";
+        togglePlayerFields();
+    });
 
     function checkIfReadyToSave() {
-        saveRunBtn.disabled = !(escolhaInputP1.value && escolhaInputP2.value);
+        const num = parseInt(numJogadoresSelect.value);
+        let ready = escolhaInputP1.value && escolhaInputP2.value;
+        if (num >= 3) ready = ready && escolhaInputP3.value;
+        if (num >= 4) ready = ready && escolhaInputP4.value;
+        
+        saveRunBtn.disabled = !ready;
     }
 
     function showResultado(divId, name) {
@@ -648,6 +801,10 @@
         sortear('pkm-sorteio-p1', 'pkm-sorteio-p1-name', 'resultado-p1', escolhaInputP1));
     document.getElementById('sortear-p2-btn').addEventListener('click', () =>
         sortear('pkm-sorteio-p2', 'pkm-sorteio-p2-name', 'resultado-p2', escolhaInputP2));
+    document.getElementById('sortear-p3-btn').addEventListener('click', () =>
+        sortear('pkm-sorteio-p3', 'pkm-sorteio-p3-name', 'resultado-p3', escolhaInputP3));
+    document.getElementById('sortear-p4-btn').addEventListener('click', () =>
+        sortear('pkm-sorteio-p4', 'pkm-sorteio-p4-name', 'resultado-p4', escolhaInputP4));
 </script>
 </body>
 </html>

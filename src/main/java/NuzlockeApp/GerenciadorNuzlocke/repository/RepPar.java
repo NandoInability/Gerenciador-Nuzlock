@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface RepPar extends JpaRepository<ParLink, Long> {
-    @Query("SELECT p FROM ParLink p WHERE p.pkm1.id = :capturaId OR p.pkm2.id = :capturaId")
+    @Query("SELECT p FROM ParLink p WHERE p.pkm1.id = :capturaId OR p.pkm2.id = :capturaId OR p.pkm3.id = :capturaId OR p.pkm4.id = :capturaId")
     Optional<ParLink> findByCapturaId(Long capturaId);
 }

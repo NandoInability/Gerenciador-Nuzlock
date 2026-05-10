@@ -101,15 +101,17 @@
         .par-actions { display: flex; gap: 0.4rem; }
 
         /* ── PKM GRID ── */
-        .pkm-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .pkm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        
+        /* Ajuste para telas menores */
         @media (max-width: 520px) {
             .pkm-grid { grid-template-columns: 1fr; }
-            .pkm-slot:first-child { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
+            .pkm-slot { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
         }
 
-        /* No desktop, sprite e info maiores */
-        .pkm-slot { padding: 1.25rem; position: relative; }
-        .pkm-slot:first-child { border-right: 1px solid rgba(255,255,255,0.07); }
+        /* Border logic for grid */
+        .pkm-slot { padding: 1.25rem; position: relative; border-right: 1px solid rgba(255,255,255,0.07); }
+        .pkm-slot:last-child { border-right: none; }
         .pkm-slot.morto { opacity: 0.45; }
         .pkm-slot.morto::after { content: '💀'; position: absolute; top: 12px; right: 12px; font-size: 1.4rem; }
 
@@ -181,9 +183,17 @@
             <div class="run-meta">
                 🎮 <strong th:text="${run.jogo.nome}">Jogo</strong>
                 &nbsp;·&nbsp;
-                👥 <strong th:text="${run.jogador1}">J1</strong>
+                👥 <span th:text="${run.jogador1}">J1</span>
                 <span style="color:rgba(255,255,255,0.3)"> &amp; </span>
-                <strong th:text="${run.jogador2}">J2</strong>
+                <span th:text="${run.jogador2}">J2</span>
+                <th:block th:if="${run.jogador3 != null}">
+                    <span style="color:rgba(255,255,255,0.3)"> &amp; </span>
+                    <span th:text="${run.jogador3}">J3</span>
+                </th:block>
+                <th:block th:if="${run.jogador4 != null}">
+                    <span style="color:rgba(255,255,255,0.3)"> &amp; </span>
+                    <span th:text="${run.jogador4}">J4</span>
+                </th:block>
             </div>
         </div>
         <a href="/" class="btn-voltar">← Dashboard</a>
@@ -248,7 +258,7 @@
                         </form>
                         <span th:if="${par.pkm1.especie.nextEvolutions != null and par.pkm1.especie.nextEvolutions.size() > 1}">
                             <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal" th:data-bs-target="${'#modalEvo1-' + par.id}">⬆ Evoluir</button>
-                            <div class="modal fade" th:id="${'#modalEvo1-' + par.id}" tabindex="-1">
+                            <div class="modal fade" th:id="${'modalEvo1-' + par.id}" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -314,6 +324,118 @@
                                         <div class="modal-body d-flex gap-3 justify-content-center flex-wrap">
                                             <form th:each="evo : ${par.pkm2.especie.nextEvolutions}"
                                                   th:action="@{/runs/{r}/pares/{p}/pkm2/evoluir(r=${run.id},p=${par.id})}"
+                                                  method="post" class="text-center">
+                                                <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
+                                                <button type="submit" class="evo-btn">
+                                                    <img th:src="${evo.sprite}" width="72"/>
+                                                    <span th:text="${evo.name}"></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- PKM 3 -->
+                <div class="pkm-slot" th:if="${par.pkm3 != null}" th:classappend="${par.pkm3.status != 'Vivo'} ? 'morto' : ''">
+                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador3}"></div>
+                    <div class="pkm-main">
+                        <img class="pkm-sprite" th:src="${par.pkm3.especie.sprite}" alt="sprite"
+                             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                        <div>
+                            <div class="pkm-apelido" th:text="${par.pkm3.apelido}">Apelido</div>
+                            <div class="pkm-especie" th:text="${par.pkm3.especie.name}">Espécie</div>
+                            <div class="pkm-types">
+                                <span class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm3.especie.primaryType)}" th:text="${par.pkm3.especie.primaryType}"></span>
+                                <span th:if="${par.pkm3.especie.secundaryType != null and par.pkm3.especie.secundaryType != ''}"
+                                      class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm3.especie.secundaryType)}" th:text="${par.pkm3.especie.secundaryType}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pkm-status-row">
+                        <span class="status-badge" th:classappend="${par.pkm3.status == 'Vivo'} ? 'status-vivo' : 'status-morto'" th:text="${par.pkm3.status}"></span>
+                        <form th:if="${par.pkm3.status == 'Vivo'}"
+                              th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm3.id})}"
+                              method="post" class="d-inline">
+                            <button type="submit" class="btn-sm-action btn-morto">💀 Morto</button>
+                        </form>
+                        <form th:if="${par.pkm3.especie.nextEvolutions != null and par.pkm3.especie.nextEvolutions.size() == 1}"
+                              th:action="@{/runs/{r}/pares/{p}/pkm3/evoluir(r=${run.id},p=${par.id})}"
+                              method="post" class="d-inline">
+                            <input type="hidden" name="novaEspecieId" th:value="${par.pkm3.especie.nextEvolutions[0].id}"/>
+                            <button type="submit" class="btn-sm-action btn-evoluir">⬆ Evoluir</button>
+                        </form>
+                        <span th:if="${par.pkm3.especie.nextEvolutions != null and par.pkm3.especie.nextEvolutions.size() > 1}">
+                            <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal" th:data-bs-target="${'#modalEvo3-' + par.id}">⬆ Evoluir</button>
+                            <div class="modal fade" th:id="${'modalEvo3-' + par.id}" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Escolha a evolução</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body d-flex gap-3 justify-content-center flex-wrap">
+                                            <form th:each="evo : ${par.pkm3.especie.nextEvolutions}"
+                                                  th:action="@{/runs/{r}/pares/{p}/pkm3/evoluir(r=${run.id},p=${par.id})}"
+                                                  method="post" class="text-center">
+                                                <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
+                                                <button type="submit" class="evo-btn">
+                                                    <img th:src="${evo.sprite}" width="72"/>
+                                                    <span th:text="${evo.name}"></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- PKM 4 -->
+                <div class="pkm-slot" th:if="${par.pkm4 != null}" th:classappend="${par.pkm4.status != 'Vivo'} ? 'morto' : ''">
+                    <div class="pkm-slot-header" th:text="'🎮 ' + ${run.jogador4}"></div>
+                    <div class="pkm-main">
+                        <img class="pkm-sprite" th:src="${par.pkm4.especie.sprite}" alt="sprite"
+                             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                        <div>
+                            <div class="pkm-apelido" th:text="${par.pkm4.apelido}">Apelido</div>
+                            <div class="pkm-especie" th:text="${par.pkm4.especie.name}">Espécie</div>
+                            <div class="pkm-types">
+                                <span class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm4.especie.primaryType)}" th:text="${par.pkm4.especie.primaryType}"></span>
+                                <span th:if="${par.pkm4.especie.secundaryType != null and par.pkm4.especie.secundaryType != ''}"
+                                      class="badge" th:classappend="'type-' + ${#strings.toLowerCase(par.pkm4.especie.secundaryType)}" th:text="${par.pkm4.especie.secundaryType}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pkm-status-row">
+                        <span class="status-badge" th:classappend="${par.pkm4.status == 'Vivo'} ? 'status-vivo' : 'status-morto'" th:text="${par.pkm4.status}"></span>
+                        <form th:if="${par.pkm4.status == 'Vivo'}"
+                              th:action="@{/runs/{runId}/pares/capturas/{capturaId}/morrer(runId=${run.id}, capturaId=${par.pkm4.id})}"
+                              method="post" class="d-inline">
+                            <button type="submit" class="btn-sm-action btn-morto">💀 Morto</button>
+                        </form>
+                        <form th:if="${par.pkm4.especie.nextEvolutions != null and par.pkm4.especie.nextEvolutions.size() == 1}"
+                              th:action="@{/runs/{r}/pares/{p}/pkm4/evoluir(r=${run.id},p=${par.id})}"
+                              method="post" class="d-inline">
+                            <input type="hidden" name="novaEspecieId" th:value="${par.pkm4.especie.nextEvolutions[0].id}"/>
+                            <button type="submit" class="btn-sm-action btn-evoluir">⬆ Evoluir</button>
+                        </form>
+                        <span th:if="${par.pkm4.especie.nextEvolutions != null and par.pkm4.especie.nextEvolutions.size() > 1}">
+                            <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal" th:data-bs-target="${'#modalEvo4-' + par.id}">⬆ Evoluir</button>
+                            <div class="modal fade" th:id="${'modalEvo4-' + par.id}" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Escolha a evolução</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body d-flex gap-3 justify-content-center flex-wrap">
+                                            <form th:each="evo : ${par.pkm4.especie.nextEvolutions}"
+                                                  th:action="@{/runs/{r}/pares/{p}/pkm4/evoluir(r=${run.id},p=${par.id})}"
                                                   method="post" class="text-center">
                                                 <input type="hidden" name="novaEspecieId" th:value="${evo.id}"/>
                                                 <button type="submit" class="evo-btn">

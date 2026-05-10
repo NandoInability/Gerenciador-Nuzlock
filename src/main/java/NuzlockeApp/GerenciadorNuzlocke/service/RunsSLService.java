@@ -39,12 +39,11 @@ public class RunsSLService {
     }
 
     @Transactional
-    public void criarNovaRunComIniciais(RunsSL run, Long starterP1Id, Long starterP2Id) {
-        RunsSL runSalva = runsRepository.save(run); // Salva a run primeiro para ter um ID
+    public void criarNovaRunComIniciais(RunsSL run, Long starterP1Id, Long starterP2Id, Long starterP3Id, Long starterP4Id) {
+        RunsSL runSalva = runsRepository.save(run);
 
         Pokemon especieP1 = pokemonService.findById(starterP1Id);
         Pokemon especieP2 = pokemonService.findById(starterP2Id);
-
         if (especieP1 == null || especieP2 == null) {
             throw new IllegalArgumentException("Pokémon inicial não encontrado.");
         }
@@ -52,20 +51,48 @@ public class RunsSLService {
         PKMCapturado capturadoP1 = new PKMCapturado();
         capturadoP1.setEspecie(especieP1);
         capturadoP1.setApelido(especieP1.getName());
-        capturadoP1.setStatus("Vivo"); // Adicione o status inicial
-        pkmCapturadoService.save(capturadoP1); // SALVA o PKMCapturado
+        capturadoP1.setStatus("Vivo");
+        pkmCapturadoService.save(capturadoP1);
 
         PKMCapturado capturadoP2 = new PKMCapturado();
         capturadoP2.setEspecie(especieP2);
         capturadoP2.setApelido(especieP2.getName());
-        capturadoP2.setStatus("Vivo"); // Adicione o status inicial
-        pkmCapturadoService.save(capturadoP2); // SALVA o PKMCapturado
+        capturadoP2.setStatus("Vivo");
+        pkmCapturadoService.save(capturadoP2);
 
         ParLink primeiroPar = new ParLink();
         primeiroPar.setRun(runSalva);
         primeiroPar.setLocalCaptura("Pokemon Inicial");
         primeiroPar.setPkm1(capturadoP1);
         primeiroPar.setPkm2(capturadoP2);
-        parLinkService.save(primeiroPar); // SALVA o ParLink
+
+
+        if (starterP3Id != null) {
+            Pokemon especieP3 = pokemonService.findById(starterP3Id);
+            if (especieP3 != null) {
+                PKMCapturado capturadoP3 = new PKMCapturado();
+                capturadoP3.setEspecie(especieP3);
+                capturadoP3.setApelido(especieP3.getName());
+                capturadoP3.setStatus("Vivo");
+                pkmCapturadoService.save(capturadoP3);
+                primeiroPar.setPkm3(capturadoP3);
+            }
+        }
+
+        if (starterP4Id != null) {
+            Pokemon especieP4 = pokemonService.findById(starterP4Id);
+            if (especieP4 != null) {
+                PKMCapturado capturadoP4 = new PKMCapturado();
+                capturadoP4.setEspecie(especieP4);
+                capturadoP4.setApelido(especieP4.getName());
+                capturadoP4.setStatus("Vivo");
+                pkmCapturadoService.save(capturadoP4);
+                primeiroPar.setPkm4(capturadoP4);
+            }
+        }
+
+        parLinkService.save(primeiroPar);
     }
+
+
 }

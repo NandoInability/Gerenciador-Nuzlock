@@ -37,117 +37,71 @@ public class ParLinkViewController {
     // Método para MOSTRAR o formulário de novo par
     @GetMapping("/novo")
     public String mostrarFormularioDeNovoPar(@PathVariable Long runId, Model model) {
-        // 1. Busca a Run atual.
         RunsSL runAtual = runsSLService.findById(runId);
 
-        // 2. LÓGICA CORRETA: Coleta as famílias de evolução JÁ CAPTURADAS (tanto do pkm1 quanto do pkm2).
         Set<String> familiasJaCapturadas = new HashSet<>();
         if (runAtual != null && runAtual.getLinks() != null) {
-            // Coleta as chains do pkm1, ignorando qualquer valor nulo
-            runAtual.getLinks().stream()
-                    .map(par -> par.getPkm1().getEspecie().getEvolChain())
-                    .filter(Objects::nonNull)
-                    .forEach(familiasJaCapturadas::add);
-
-            // Coleta as chains do pkm2, ignorando qualquer valor nulo
-            runAtual.getLinks().stream()
-                    .map(par -> par.getPkm2().getEspecie().getEvolChain())
-                    .filter(Objects::nonNull)
-                    .forEach(familiasJaCapturadas::add);
+            runAtual.getLinks().forEach(par -> {
+                if (par.getPkm1() != null && par.getPkm1().getEspecie().getEvolChain() != null)
+                    familiasJaCapturadas.add(par.getPkm1().getEspecie().getEvolChain());
+                if (par.getPkm2() != null && par.getPkm2().getEspecie().getEvolChain() != null)
+                    familiasJaCapturadas.add(par.getPkm2().getEspecie().getEvolChain());
+                if (par.getPkm3() != null && par.getPkm3().getEspecie() != null && par.getPkm3().getEspecie().getEvolChain() != null)
+                    familiasJaCapturadas.add(par.getPkm3().getEspecie().getEvolChain());
+                if (par.getPkm4() != null && par.getPkm4().getEspecie() != null && par.getPkm4().getEspecie().getEvolChain() != null)
+                    familiasJaCapturadas.add(par.getPkm4().getEspecie().getEvolChain());
+            });
         }
 
-        // 3. Busca TODOS os Pokémon do Pokedex.
-        List<Pokemon> todosOsPokemons = pokemonService.findAll();
-
-        // 4. Filtra a lista, criando uma nova APENAS com os Pokémon disponíveis.
-        List<Pokemon> pokemonsDisponiveis = todosOsPokemons.stream()
-                .filter(pokemon -> pokemon.getEvolChain() != null && !familiasJaCapturadas.contains(pokemon.getEvolChain()))
+        List<Pokemon> pokemonsDisponiveis = pokemonService.findAll().stream()
+                .filter(p -> p.getEvolChain() != null && !familiasJaCapturadas.contains(p.getEvolChain()))
                 .collect(Collectors.toList());
 
-        // 5. Prepara o objeto ParLink vazio para o formulário.
         ParLink parVazio = new ParLink();
         parVazio.setPkm1(new PKMCapturado());
         parVazio.setPkm2(new PKMCapturado());
+        if (runAtual != null && runAtual.getJogador3() != null) parVazio.setPkm3(new PKMCapturado());
+        if (runAtual != null && runAtual.getJogador4() != null) parVazio.setPkm4(new PKMCapturado());
 
-        // 6. Envia os dados corretos para o HTML.
         model.addAttribute("runId", runId);
+        model.addAttribute("run", runAtual);
         model.addAttribute("par", parVazio);
-        // IMPORTANTE: Enviando a lista JÁ FILTRADA para o HTML.
         model.addAttribute("pokemons", pokemonsDisponiveis);
-
         return "form-par";
     }
-    // Método para SALVAR o formulário de novo par
+
     @PostMapping
     public String salvarNovoPar(@PathVariable Long runId, @ModelAttribute("par") ParLink par, Model model) {
         RunsSL run = runsSLService.findById(runId);
-        if (run != null){
-            par.setRun(run);
-        }
+        if (run != null) par.setRun(run);
+
+        // Se pkm3/pkm4 vieram sem espécie, zera para não salvar vazio
+        if (par.getPkm3() != null && par.getPkm3().getEspecie() == null) par.setPkm3(null);
+        if (par.getPkm4() != null && par.getPkm4().getEspecie() == null) par.setPkm4(null);
 
         try {
             parLinkService.save(par);
-            return "redirect:/runs/" + runId; // Redireciona para a página de detalhes da run em caso de sucesso
-        } catch (IllegalArgumentException e) {
-            // Se houver um erro de validação, adicione a mensagem ao modelo
-            model.addAttribute("errorMessage", e.getMessage());
-            // Re-popule o modelo com os dados necessários para exibir o formulário novamente
-            // Isso inclui a runId, o objeto 'par' (com os dados que o usuário tentou enviar)
-            // e a lista de pokemons (filtrada, como no método GET)
-
-            // Recriar a lista de pokemons disponíveis para o formulário
-            Set<String> familiasJaCapturadas = new HashSet<>();
-            if (run != null && run.getLinks() != null) {
-                run.getLinks().stream()
-                        .map(p -> p.getPkm1().getEspecie().getEvolChain())
-                        .filter(Objects::nonNull)
-                        .forEach(familiasJaCapturadas::add);
-                run.getLinks().stream()
-                        .map(p -> p.getPkm2().getEspecie().getEvolChain())
-                        .filter(Objects::nonNull)
-                        .forEach(familiasJaCapturadas::add);
-            }
-            List<Pokemon> todosOsPokemons = pokemonService.findAll();
-            List<Pokemon> pokemonsDisponiveis = todosOsPokemons.stream()
-                    .filter(pokemon -> pokemon.getEvolChain() != null && !familiasJaCapturadas.contains(pokemon.getEvolChain()))
-                    .collect(Collectors.toList());
-
-            model.addAttribute("runId", runId); // Garante que o runId ainda esteja no modelo
-            model.addAttribute("par", par); // Mantém os dados que o usuário digitou
-            model.addAttribute("pokemons", pokemonsDisponiveis); // Recarrega os pokemons disponíveis
-            return "form-par"; // Retorna para o formulário com a mensagem de erro
-        }
-    }
-
-    @GetMapping("/{parId}/editar")
-    public String mostraredicao(
-            @PathVariable long runId,
-            @PathVariable long parId,
-            Model model) {
-        ParLink parExistente = parLinkService.findById(parId);
-        if (parExistente == null) {
             return "redirect:/runs/" + runId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("runId", runId);
+            model.addAttribute("run", run);
+            model.addAttribute("par", par);
+            model.addAttribute("pokemons", pokemonService.findAll());
+            return "form-par";
         }
-
-        List<Pokemon> todososPKM = pokemonService.findAll();
-
-        model.addAttribute("runId", runId);
-        model.addAttribute("par", parExistente);
-        model.addAttribute("pokemons", todososPKM);
-        return "form-par";
     }
 
     @PostMapping("/{parId}/editar")
-    public String salvarEdicao(
-            @PathVariable Long runId,
-            @PathVariable Long parId,
-            @ModelAttribute("par") ParLink parAtualizado,
-            Model model) {
+    public String salvarEdicao(@PathVariable Long runId, @PathVariable Long parId,
+                               @ModelAttribute("par") ParLink parAtualizado, Model model) {
         RunsSL run = runsSLService.findById(runId);
-        if (run != null) {
-            parAtualizado.setRun(run);
-        }
+        if (run != null) parAtualizado.setRun(run);
         parAtualizado.setId(parId);
+
+        if (parAtualizado.getPkm3() != null && parAtualizado.getPkm3().getEspecie() == null) parAtualizado.setPkm3(null);
+        if (parAtualizado.getPkm4() != null && parAtualizado.getPkm4().getEspecie() == null) parAtualizado.setPkm4(null);
+
         try {
             parLinkService.save(parAtualizado);
             return "redirect:/runs/" + runId;
@@ -160,23 +114,22 @@ public class ParLinkViewController {
         }
     }
 
-    @PostMapping("/{parId}/pkm1/evoluir")
-    public String evoluirPkm1(@PathVariable Long runId, @PathVariable Long parId,
+    // Adiciona endpoints de evolução para pkm3 e pkm4
+    @PostMapping("/{parId}/pkm3/evoluir")
+    public String evoluirPkm3(@PathVariable Long runId, @PathVariable Long parId,
                               @RequestParam Long novaEspecieId) {
         ParLink par = parLinkService.findById(parId);
-        Pokemon novaEspecie = pokemonService.findById(novaEspecieId);
-        par.getPkm1().setEspecie(novaEspecie);
-        pkmCapturadoService.save(par.getPkm1());
+        par.getPkm3().setEspecie(pokemonService.findById(novaEspecieId));
+        pkmCapturadoService.save(par.getPkm3());
         return "redirect:/runs/" + runId;
     }
 
-    @PostMapping("/{parId}/pkm2/evoluir")
-    public String evoluirPkm2(@PathVariable Long runId, @PathVariable Long parId,
+    @PostMapping("/{parId}/pkm4/evoluir")
+    public String evoluirPkm4(@PathVariable Long runId, @PathVariable Long parId,
                               @RequestParam Long novaEspecieId) {
         ParLink par = parLinkService.findById(parId);
-        Pokemon novaEspecie = pokemonService.findById(novaEspecieId);
-        par.getPkm2().setEspecie(novaEspecie);
-        pkmCapturadoService.save(par.getPkm2());
+        par.getPkm4().setEspecie(pokemonService.findById(novaEspecieId));
+        pkmCapturadoService.save(par.getPkm4());
         return "redirect:/runs/" + runId;
     }
 

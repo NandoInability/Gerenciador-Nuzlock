@@ -248,6 +248,56 @@
             </div>
         </fieldset>
 
+        <!-- JOGADOR 3 -->
+        <fieldset class="player-fieldset border" th:if="${run.jogador3 != null}">
+            <legend class="float-none w-auto px-2">🎮 Jogador 3</legend>
+            <div class="mb-2">
+                <label class="form-label">Espécie de Pokémon</label>
+                <select class="pkm-real-select starter-option" id="pkm3-select" th:field="*{pkm3.especie}" required>
+                    <option value="">Selecione</option>
+                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"
+                            th:attr="data-sprite=${p.sprite}, data-chain=${p.evolChain}"></option>
+                </select>
+                <div class="pkm-picker-wrapper" data-target="pkm3-select">
+                    <div class="pkm-search-wrap">
+                        <span class="pkm-search-icon">🔍</span>
+                        <input type="text" class="pkm-search-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                    </div>
+                    <div class="pkm-selected-display"><span class="placeholder-text">Nenhum selecionado</span></div>
+                    <div class="pkm-dropdown"><span class="no-results">Nenhum Pokémon encontrado</span></div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">Apelido</label>
+                <input type="text" class="form-control" th:field="*{pkm3.apelido}" placeholder="Apelido do Pokémon">
+            </div>
+        </fieldset>
+
+        <!-- JOGADOR 4 -->
+        <fieldset class="player-fieldset border" th:if="${run.jogador4 != null}">
+            <legend class="float-none w-auto px-2">🎮 Jogador 4</legend>
+            <div class="mb-2">
+                <label class="form-label">Espécie de Pokémon</label>
+                <select class="pkm-real-select starter-option" id="pkm4-select" th:field="*{pkm4.especie}" required>
+                    <option value="">Selecione</option>
+                    <option th:each="p : ${pokemons}" th:value="${p.id}" th:text="${p.name}"
+                            th:attr="data-sprite=${p.sprite}, data-chain=${p.evolChain}"></option>
+                </select>
+                <div class="pkm-picker-wrapper" data-target="pkm4-select">
+                    <div class="pkm-search-wrap">
+                        <span class="pkm-search-icon">🔍</span>
+                        <input type="text" class="pkm-search-input" placeholder="Buscar Pokémon..." autocomplete="off">
+                    </div>
+                    <div class="pkm-selected-display"><span class="placeholder-text">Nenhum selecionado</span></div>
+                    <div class="pkm-dropdown"><span class="no-results">Nenhum Pokémon encontrado</span></div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">Apelido</label>
+                <input type="text" class="form-control" th:field="*{pkm4.apelido}" placeholder="Apelido do Pokémon">
+            </div>
+        </fieldset>
+
     </form>
 </div>
 

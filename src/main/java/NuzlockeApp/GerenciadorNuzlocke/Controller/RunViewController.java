@@ -45,9 +45,14 @@ public class RunViewController {
 
     // Método para salvar o formulário (POST /runs)
     @PostMapping
-    public String salvarNovaRun(@ModelAttribute("run") RunsSL run, @RequestParam Long starterP1Id, @RequestParam Long starterP2Id) {
-        runsSLService.criarNovaRunComIniciais(run, starterP1Id, starterP2Id);
-        return "redirect:/"; // Redireciona para o dashboard
+    public String salvarNovaRun(
+            @ModelAttribute("run") RunsSL run,
+            @RequestParam Long starterP1Id,
+            @RequestParam Long starterP2Id,
+            @RequestParam(required = false) Long starterP3Id,
+            @RequestParam(required = false) Long starterP4Id) {
+        runsSLService.criarNovaRunComIniciais(run, starterP1Id, starterP2Id, starterP3Id, starterP4Id);
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")

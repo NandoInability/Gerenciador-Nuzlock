@@ -63,6 +63,22 @@ public class ParLink {
     @JoinColumn(name = "captura_jogador2_id")
     private PKMCapturado pkm2;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "captura_jogador3_id")
+    private PKMCapturado pkm3;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "captura_jogador4_id")
+    private PKMCapturado pkm4;
+
+    public PKMCapturado getPkm3() { return pkm3; }
+
+    public void setPkm3(PKMCapturado pkm3) { this.pkm3 = pkm3; }
+
+    public PKMCapturado getPkm4() { return pkm4; }
+
+    public void setPkm4(PKMCapturado pkm4) { this.pkm4 = pkm4; }
+
     @Column(name = "local_captura")
     private String localCaptura;
 

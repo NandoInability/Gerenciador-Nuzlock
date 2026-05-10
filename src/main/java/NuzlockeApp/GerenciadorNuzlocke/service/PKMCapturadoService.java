@@ -18,34 +18,31 @@ public class PKMCapturadoService {
 
     public void marcarMorto(Long capturaId) {
         Optional<PKMCapturado> capturaOpt = rep.findById(capturaId);
-
         if (capturaOpt.isPresent()) {
             PKMCapturado capturaPrincipal = capturaOpt.get();
-
             if ("Vivo".equals(capturaPrincipal.getStatus())) {
                 capturaPrincipal.setStatus("Morto");
                 rep.save(capturaPrincipal);
 
                 Optional<ParLink> parOpt = repPar.findByCapturaId(capturaId);
-
                 if (parOpt.isPresent()) {
                     ParLink par = parOpt.get();
-
-                    PKMCapturado capturaParceira = null;
-                    if (par.getPkm1().getId().equals(capturaPrincipal.getId())) {
-                        capturaParceira = par.getPkm2();
-                    } else {
-                        capturaParceira = par.getPkm1();
-                    }
-
-                    if (capturaParceira != null && "Vivo".equals(capturaParceira.getStatus())) {
-                        capturaParceira.setStatus("Morto");
-                        rep.save(capturaParceira);
+                    // Marca todos os parceiros como mortos
+                    marcarParceiroMorto(par.getPkm1(), capturaPrincipal);
+                    marcarParceiroMorto(par.getPkm2(), capturaPrincipal);
+                    marcarParceiroMorto(par.getPkm3(), capturaPrincipal);
+                    marcarParceiroMorto(par.getPkm4(), capturaPrincipal);
                 }
             }
         }
     }
-}
+
+    private void marcarParceiroMorto(PKMCapturado parceiro, PKMCapturado principal) {
+        if (parceiro != null && !parceiro.getId().equals(principal.getId()) && "Vivo".equals(parceiro.getStatus())) {
+            parceiro.setStatus("Morto");
+            rep.save(parceiro);
+        }
+    }
     public PKMCapturado save(PKMCapturado pkmCapturado) {
         return rep.save(pkmCapturado);
     }
