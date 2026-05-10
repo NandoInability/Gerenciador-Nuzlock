@@ -204,7 +204,10 @@
 
     <div class="section-header">
         <span class="section-title">⚔️ Pares Capturados</span>
-        <a th:href="@{/runs/{id}/pares/novo(id=${run.id})}" class="btn-add-par">+ Adicionar Par</a>
+        <div class="d-flex gap-2">
+            <a th:href="@{/pokedex}" class="btn-add-par" style="background: linear-gradient(135deg, #4cc9f0, #4361ee);">Pokédex</a>
+            <a th:href="@{/runs/{id}/pares/novo(id=${run.id})}" class="btn-add-par">+ Adicionar Par</a>
+        </div>
     </div>
 
     <div th:each="par : ${run.links}">

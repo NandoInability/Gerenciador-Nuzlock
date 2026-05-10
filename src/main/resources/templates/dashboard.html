@@ -192,7 +192,10 @@
         <h1 class="site-title">Minhas Runs<br>de Soulink</h1>
         <p class="site-sub">Acompanhe suas aventuras e pares.</p>
     </div>
-    <a href="/runs/novo" class="btn-nova-run">+ Nova Run</a>
+    <div class="d-flex align-items-center">
+        <a th:href="@{/pokedex}" class="btn-nova-run me-2" style="background: linear-gradient(135deg, #4cc9f0, #4361ee);">Pokédex</a>
+        <a href="/runs/novo" class="btn-nova-run">+ Nova Run</a>
+    </div>
 </header>
 
 <div class="content-wrap">
