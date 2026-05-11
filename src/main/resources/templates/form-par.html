@@ -200,7 +200,7 @@
 
         <!-- JOGADOR 1 -->
         <fieldset class="player-fieldset border">
-            <legend class="float-none w-auto px-2">🎮 Jogador 1</legend>
+            <legend class="float-none w-auto px-2" th:text="'🎮 ' + ${run.jogador1}">🎮 Jogador 1</legend>
             <div class="mb-2">
                 <label class="form-label">Espécie de Pokémon</label>
                 <select class="pkm-real-select starter-option" id="pkm1-select" th:field="*{pkm1.especie}" required>
@@ -225,7 +225,7 @@
 
         <!-- JOGADOR 2 -->
         <fieldset class="player-fieldset border">
-            <legend class="float-none w-auto px-2">🎮 Jogador 2</legend>
+            <legend class="float-none w-auto px-2" th:text="'🎮 ' + ${run.jogador2}">🎮 Jogador 2</legend>
             <div class="mb-2">
                 <label class="form-label">Espécie de Pokémon</label>
                 <select class="pkm-real-select starter-option" id="pkm2-select" th:field="*{pkm2.especie}" required>
@@ -249,8 +249,8 @@
         </fieldset>
 
         <!-- JOGADOR 3 -->
-        <fieldset class="player-fieldset border" th:if="${run.jogador3 != null}">
-            <legend class="float-none w-auto px-2">🎮 Jogador 3</legend>
+        <fieldset class="player-fieldset border" th:if="${run.jogador3 != null and !run.jogador3.isEmpty()}">
+            <legend class="float-none w-auto px-2" th:text="'🎮 ' + ${run.jogador3}">🎮 Jogador 3</legend>
             <div class="mb-2">
                 <label class="form-label">Espécie de Pokémon</label>
                 <select class="pkm-real-select starter-option" id="pkm3-select" th:field="*{pkm3.especie}" required>
@@ -274,8 +274,8 @@
         </fieldset>
 
         <!-- JOGADOR 4 -->
-        <fieldset class="player-fieldset border" th:if="${run.jogador4 != null}">
-            <legend class="float-none w-auto px-2">🎮 Jogador 4</legend>
+        <fieldset class="player-fieldset border" th:if="${run.jogador4 != null and !run.jogador4.isEmpty()}">
+            <legend class="float-none w-auto px-2" th:text="'🎮 ' + ${run.jogador4}">🎮 Jogador 4</legend>
             <div class="mb-2">
                 <label class="form-label">Espécie de Pokémon</label>
                 <select class="pkm-real-select starter-option" id="pkm4-select" th:field="*{pkm4.especie}" required>

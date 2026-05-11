@@ -58,10 +58,12 @@ public class ParLinkViewController {
                 .collect(Collectors.toList());
 
         ParLink parVazio = new ParLink();
-        parVazio.setPkm1(new PKMCapturado());
-        parVazio.setPkm2(new PKMCapturado());
-        if (runAtual != null && runAtual.getJogador3() != null) parVazio.setPkm3(new PKMCapturado());
-        if (runAtual != null && runAtual.getJogador4() != null) parVazio.setPkm4(new PKMCapturado());
+        if (runAtual != null) {
+            parVazio.setPkm1(new PKMCapturado());
+            parVazio.setPkm2(new PKMCapturado());
+            if (runAtual.getJogador3() != null && !runAtual.getJogador3().isBlank()) parVazio.setPkm3(new PKMCapturado());
+            if (runAtual.getJogador4() != null && !runAtual.getJogador4().isBlank()) parVazio.setPkm4(new PKMCapturado());
+        }
 
         model.addAttribute("runId", runId);
         model.addAttribute("run", runAtual);
@@ -76,8 +78,8 @@ public class ParLinkViewController {
         if (run != null) par.setRun(run);
 
         // Se pkm3/pkm4 vieram sem espécie, zera para não salvar vazio
-        if (par.getPkm3() != null && par.getPkm3().getEspecie() == null) par.setPkm3(null);
-        if (par.getPkm4() != null && par.getPkm4().getEspecie() == null) par.setPkm4(null);
+        if (par.getPkm3() != null && (par.getPkm3().getEspecie() == null || par.getPkm3().getEspecie().getId() == null)) par.setPkm3(null);
+        if (par.getPkm4() != null && (par.getPkm4().getEspecie() == null || par.getPkm4().getEspecie().getId() == null)) par.setPkm4(null);
 
         try {
             parLinkService.save(par);
@@ -99,8 +101,8 @@ public class ParLinkViewController {
         if (run != null) parAtualizado.setRun(run);
         parAtualizado.setId(parId);
 
-        if (parAtualizado.getPkm3() != null && parAtualizado.getPkm3().getEspecie() == null) parAtualizado.setPkm3(null);
-        if (parAtualizado.getPkm4() != null && parAtualizado.getPkm4().getEspecie() == null) parAtualizado.setPkm4(null);
+        if (parAtualizado.getPkm3() != null && (parAtualizado.getPkm3().getEspecie() == null || parAtualizado.getPkm3().getEspecie().getId() == null)) parAtualizado.setPkm3(null);
+        if (parAtualizado.getPkm4() != null && (parAtualizado.getPkm4().getEspecie() == null || parAtualizado.getPkm4().getEspecie().getId() == null)) parAtualizado.setPkm4(null);
 
         try {
             parLinkService.save(parAtualizado);

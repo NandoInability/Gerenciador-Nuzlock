@@ -21,10 +21,20 @@ public class ParLinkService {
         PKMCapturado pkm2 = par.getPkm2();
         PKMCapturado pkm3 = par.getPkm3();
         PKMCapturado pkm4 = par.getPkm4();
+        RunsSL run = par.getRun();
 
         if (pkm1 == null || pkm1.getEspecie() == null ||
                 pkm2 == null || pkm2.getEspecie() == null) {
             throw new IllegalArgumentException("Os Pokémon dos jogadores 1 e 2 são obrigatórios.");
+        }
+
+        if (run != null) {
+            if (run.getJogador3() != null && !run.getJogador3().isBlank() && (pkm3 == null || pkm3.getEspecie() == null)) {
+                throw new IllegalArgumentException("O Pokémon do jogador 3 (" + run.getJogador3() + ") é obrigatório.");
+            }
+            if (run.getJogador4() != null && !run.getJogador4().isBlank() && (pkm4 == null || pkm4.getEspecie() == null)) {
+                throw new IllegalArgumentException("O Pokémon do jogador 4 (" + run.getJogador4() + ") é obrigatório.");
+            }
         }
 
         // Coleta todas as espécies presentes no par para validação cruzada
