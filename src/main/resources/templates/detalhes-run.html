@@ -317,7 +317,7 @@
                         </form>
                         <span th:if="${par.pkm2.especie.nextEvolutions != null and par.pkm2.especie.nextEvolutions.size() > 1}">
                             <button class="btn-sm-action btn-evoluir" data-bs-toggle="modal" th:data-bs-target="${'#modalEvo2-' + par.id}">⬆ Evoluir</button>
-                            <div class="modal fade" th:id="${'#modalEvo2-' + par.id}" tabindex="-1">
+                            <div class="modal fade" th:id="${'modalEvo2-' + par.id}" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
