@@ -51,18 +51,50 @@
                         <div class="stat-label">Cadeia Evolutiva <span th:text="${pokemon.evolChain}">Bulbasaur</span></div>
                     </div>
                     <hr class="my-4 opacity-25">
+                    <!-- Base Stats -->
                     <h4 class="mb-4 fw-800">Base Stats</h4>
-                    <p class="text-muted small">Os status detalhados e métodos de evolução serão carregados na próxima atualização do banco.</p>
-                    
-                    <!-- Placeholder para futuros status -->
+
                     <div class="stat-row">
-                        <div class="stat-label">HP <span>-</span></div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill bg-success" style="width: 0%"></div></div>
+                        <div class="stat-label">HP <span th:text="${pokemon.hp != null ? pokemon.hp : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill bg-success" th:style="'width: ' + (${pokemon.hp != null ? (pokemon.hp * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-label">Ataque <span>-</span></div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill bg-danger" style="width: 0%"></div></div>
+                        <div class="stat-label">Ataque <span th:text="${pokemon.attack != null ? pokemon.attack : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill bg-danger" th:style="'width: ' + (${pokemon.attack != null ? (pokemon.attack * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
                     </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Defesa <span th:text="${pokemon.defense != null ? pokemon.defense : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill bg-warning" th:style="'width: ' + (${pokemon.defense != null ? (pokemon.defense * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Sp. Attack <span th:text="${pokemon.spAttack != null ? pokemon.spAttack : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill bg-info" th:style="'width: ' + (${pokemon.spAttack != null ? (pokemon.spAttack * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Sp. Defense <span th:text="${pokemon.spDefense != null ? pokemon.spDefense : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill" style="background-color: #6f42c1; width: 0%;" th:styleappend="'width: ' + (${pokemon.spDefense != null ? (pokemon.spDefense * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Velocidade <span th:text="${pokemon.speed != null ? pokemon.speed : '-'}">-</span></div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill bg-secondary" th:style="'width: ' + (${pokemon.speed != null ? (pokemon.speed * 100.0 / 255.0) : 0}) + '%'"></div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 opacity-25">
+
+                    <h4 class="mb-4 fw-800">Método de Evolução</h4>
+                    <p th:text="${pokemon.evoDetails != null ? pokemon.evoDetails : 'Nenhum detalhe de evolução registrado.'}"></p>
                 </div>
             </div>
         </div>

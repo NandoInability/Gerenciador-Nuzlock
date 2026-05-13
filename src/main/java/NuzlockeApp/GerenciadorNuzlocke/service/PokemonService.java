@@ -15,7 +15,7 @@ public class PokemonService {
     }
 
     public List<Pokemon> findAll() {
-        return pokemonRepository.findAll();
+        return pokemonRepository.findAllByOrderByPkdexNumberAsc();
     }
 
     public Pokemon findById(Long id) {
