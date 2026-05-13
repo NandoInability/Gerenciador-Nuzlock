@@ -91,6 +91,27 @@ public class Pokemon {
 
     private String evolChain;
 
+    @Column(name = "hp")
+    private Integer hp;
+
+    @Column(name = "attack")
+    private Integer attack;
+
+    @Column(name = "defense")
+    private Integer defense;
+
+    @Column(name = "sp_attack")
+    private Integer spAttack;
+
+    @Column(name = "sp_defense")
+    private Integer spDefense;
+
+    @Column(name = "speed")
+    private Integer speed;
+
+    @Column(name = "evo_details") // Confirme se no Supabase está evo_details ou evol_details
+    private String evo_details;
+
     public String getSprite() {
         return sprite;
     }
