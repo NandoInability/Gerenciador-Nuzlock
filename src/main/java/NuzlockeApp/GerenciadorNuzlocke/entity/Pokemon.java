@@ -9,88 +9,34 @@ import java.util.List;
 
 @Entity
 @Table(name = "pokemons")
-@Data
+@Data // O Lombok gera todos os Getters e Setters automaticamente para você!
 public class Pokemon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String getEvolChain() {
-        return evolChain;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPrimaryType() {
-        return primaryType;
-    }
-
-    public void setPrimaryType(String primaryType) {
-        this.primaryType = primaryType;
-    }
-
-    public String getSecundaryType() {
-        return secundaryType;
-    }
-
-    public void setSecundaryType(String secundaryType) {
-        this.secundaryType = secundaryType;
-    }
-
-    public Integer getGeneration() {
-        return generation;
-    }
-
-    public void setGeneration(Integer generation) {
-        this.generation = generation;
-    }
-
-    public Integer getPkdexNumber() {
-        return pkdexNumber;
-    }
-
-    public void setPkdexNumber(Integer pkdexNumber) {
-        this.pkdexNumber = pkdexNumber;
-    }
-
-    public void setEvolChain(String evolChain) {
-        this.evolChain = evolChain;
-    }
-
     @Column(name = "name")
     private String name;
-    
+
     @Column(name = "primary_type")
     private String primaryType;
-    
+
     @Column(name = "secundary_type")
     private String secundaryType;
-    
+
     @Column(name = "generation")
     private Integer generation;
-    
+
     @Column(name = "pkdex_number")
     private Integer pkdexNumber;
-    
+
     @Column(name = "sprite")
     private String sprite;
 
+    @Column(name = "evol_chain")
     private String evolChain;
 
+    // Status Base
     @Column(name = "hp")
     private Integer hp;
 
@@ -109,15 +55,9 @@ public class Pokemon {
     @Column(name = "speed")
     private Integer speed;
 
-    @Column(name = "evo_details") // Confirme se no Supabase está evo_details ou evol_details
-    private String evo_details;
 
-    public String getSprite() {
-        return sprite;
-    }
-    public void setSprite(String sprite) {
-        this.sprite = sprite;
-    }
+    @Column(name = "evo_details")
+    private String evoDetails;
 
     @ManyToMany
     @JoinTable(
@@ -128,11 +68,4 @@ public class Pokemon {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Pokemon> nextEvolutions = new ArrayList<>();
-
-    public List<Pokemon> getNextEvolutions() {
-        return nextEvolutions;
-    }
-    public void setNextEvolutions(List<Pokemon> nextEvolutions) {
-        this.nextEvolutions = nextEvolutions;
-    }
 }
