@@ -1,6 +1,7 @@
 package NuzlockeApp.GerenciadorNuzlocke.Controller;
 
 import NuzlockeApp.GerenciadorNuzlocke.entity.Pokemon;
+import NuzlockeApp.GerenciadorNuzlocke.repository.RepdePkm;
 import NuzlockeApp.GerenciadorNuzlocke.service.PokeApiService;
 import NuzlockeApp.GerenciadorNuzlocke.service.PokemonService;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,13 @@ public class PokedexController {
     private final PokemonService pokemonService;
     private final PokeApiService pokeApiService;
 
-    public PokedexController(PokemonService pokemonService, PokeApiService pokeApiService) {
+    // Injetamos também o seu repositório para usar a busca otimizada
+    private final RepdePkm repdePkm;
+
+    public PokedexController(PokemonService pokemonService, PokeApiService pokeApiService, RepdePkm repdePkm) {
         this.pokemonService = pokemonService;
         this.pokeApiService = pokeApiService;
+        this.repdePkm = repdePkm;
     }
 
     @GetMapping
@@ -49,11 +54,12 @@ public class PokedexController {
     }
 
     @GetMapping("/{id}")
-    public String detalhesPokemon(@PathVariable Long id, Model model) {
-        Pokemon pokemon = pokemonService.findById(id);
-        if (pokemon == null) {
-            return "redirect:/pokedex";
-        }
+    public String detalhesPokemon(@PathVariable Integer id, Model model) { // O ID aqui pode ser Integer para bater com o pkdex_number
+
+        // Usamos o método otimizado que criamos no RepdePkm
+        Pokemon pokemon = repdePkm.findByIdComEvolucoes(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pokémon não encontrado"));
+
         model.addAttribute("pokemon", pokemon);
         return "pokedex/detalhes";
     }

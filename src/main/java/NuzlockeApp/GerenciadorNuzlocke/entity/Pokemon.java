@@ -65,7 +65,5 @@ public class Pokemon {
             joinColumns = @JoinColumn(name = "pokemon_id"),
             inverseJoinColumns = @JoinColumn(name = "next_evolution_id")
     )
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private List<Pokemon> nextEvolutions = new ArrayList<>();
 }
