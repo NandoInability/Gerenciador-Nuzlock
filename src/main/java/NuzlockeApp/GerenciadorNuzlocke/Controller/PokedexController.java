@@ -32,34 +32,30 @@ public class PokedexController {
 
     @GetMapping
     public String listarPokemons(Model model, @RequestParam(required = false) String search) {
+        // Usa findAll() aqui pois a pokedex precisa dos dados completos
         List<Pokemon> allPokemons = pokemonService.findAll();
-        
-        // Se o banco estiver vazio, inicializa com alguns da 1ª gen para não ficar vazio
+
         if (allPokemons.isEmpty()) {
             allPokemons = pokeApiService.fetchAndMapPokemons(151);
             allPokemons.forEach(pokemonService::save);
         }
-
         if (search != null && !search.isEmpty()) {
             String finalSearch = search.toLowerCase();
             allPokemons = allPokemons.stream()
-                    .filter(p -> p.getName().toLowerCase().contains(finalSearch) || 
-                                 String.valueOf(p.getPkdexNumber()).equals(finalSearch))
+                    .filter(p -> p.getName().toLowerCase().contains(finalSearch) ||
+                            String.valueOf(p.getPkdexNumber()).equals(finalSearch))
                     .collect(Collectors.toList());
         }
-
         model.addAttribute("pokemons", allPokemons);
         model.addAttribute("search", search);
         return "pokedex/lista";
     }
 
     @GetMapping("/{id}")
-    public String detalhesPokemon(@PathVariable Integer id, Model model) { // O ID aqui pode ser Integer para bater com o pkdex_number
-
-        // Usamos o método otimizado que criamos no RepdePkm
+    public String detalhesPokemon(@PathVariable Integer id, Model model) {
+        // Usa findByPkdexNumber que busca pelo número da pokédex
         Pokemon pokemon = repdePkm.findByIdComEvolucoes(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pokémon não encontrado"));
-
         model.addAttribute("pokemon", pokemon);
         return "pokedex/detalhes";
     }

@@ -19,6 +19,10 @@ public class PokemonService {
         return pokemonRepository.findAllForPicker();
     }
 
+    public List<Pokemon> findAll() {
+        return pokemonRepository.findAllByOrderByPkdexNumberAsc();
+    }
+
     public Pokemon findById(Long id) {
         return pokemonRepository.findById(id).orElse(null);
     }

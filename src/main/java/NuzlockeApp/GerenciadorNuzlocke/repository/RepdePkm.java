@@ -16,4 +16,8 @@ public interface RepdePkm extends JpaRepository<Pokemon, Long> {
     @Query("SELECT new NuzlockeApp.GerenciadorNuzlocke.DTO.DTO(p.id, p.name, p.sprite, p.evolChain) FROM Pokemon p ORDER BY p.pkdexNumber ASC")
     List<DTO> findAllForPicker();
 
+    List<Pokemon> findAllByOrderByPkdexNumberAsc();
+
+    @Query("SELECT p FROM Pokemon p LEFT JOIN FETCH p.nextEvolutions WHERE p.pkdexNumber = :pkdexNumber")
+    Optional<Pokemon> findByIdComEvolucoes(@Param("pkdexNumber") Integer pkdexNumber);
 }
