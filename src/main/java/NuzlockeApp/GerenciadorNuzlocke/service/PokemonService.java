@@ -1,4 +1,5 @@
 package NuzlockeApp.GerenciadorNuzlocke.service;
+import NuzlockeApp.GerenciadorNuzlocke.DTO.DTO;
 import NuzlockeApp.GerenciadorNuzlocke.entity.Pokemon;
 import NuzlockeApp.GerenciadorNuzlocke.repository.RepdePkm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class PokemonService {
         return pokemonRepository.save(pokemon);
     }
 
-    public List<Pokemon> findAll() {
-        return pokemonRepository.findAllByOrderByPkdexNumberAsc();
+    public List<DTO> findAllForPicker() {
+        return pokemonRepository.findAllForPicker();
     }
 
     public Pokemon findById(Long id) {

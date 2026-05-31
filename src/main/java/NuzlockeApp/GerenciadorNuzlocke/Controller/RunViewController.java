@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @Controller
-@RequestMapping("/runs") // Define /runs como URL base para este controller
+@RequestMapping("/runs")
 public class RunViewController {
 
     @Autowired
@@ -35,11 +35,9 @@ public class RunViewController {
     @GetMapping("/novo")
     public String mostrarFormularioDeNovaRun(Model model) {
         List<Jogo> todosOsJogos = jogoService.findAll();
-        List<Pokemon> todosOsPokemons = pokemonService.findAll();
-        model.addAttribute("pokemons", todosOsPokemons);
+        model.addAttribute("pokemons", pokemonService.findAllForPicker());
         model.addAttribute("run", new RunsSL());
         model.addAttribute("jogos", todosOsJogos);
-        model.addAttribute("run", new RunsSL());
         return "form-run";
     }
 
@@ -90,8 +88,8 @@ public class RunViewController {
     public String mostrarFormDeEdicaoRun(@PathVariable Long id, Model model) {
         RunsSL runParaEditar = runsSLService.findById(id);
         List<Jogo> todosOsJogos = jogoService.findAll();
-
         model.addAttribute("jogos", todosOsJogos);
+        model.addAttribute("pokemons", pokemonService.findAllForPicker());
         model.addAttribute("run", runParaEditar);
         return "form-run";
     }

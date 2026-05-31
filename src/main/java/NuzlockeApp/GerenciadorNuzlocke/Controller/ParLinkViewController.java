@@ -2,7 +2,7 @@ package NuzlockeApp.GerenciadorNuzlocke.Controller;
 
 import NuzlockeApp.GerenciadorNuzlocke.entity.ParLink;
 import NuzlockeApp.GerenciadorNuzlocke.entity.Pokemon;
-import NuzlockeApp.GerenciadorNuzlocke.entity.PKMCapturado; // Importe a nova entidade
+import NuzlockeApp.GerenciadorNuzlocke.entity.PKMCapturado;
 import NuzlockeApp.GerenciadorNuzlocke.entity.RunsSL;
 import NuzlockeApp.GerenciadorNuzlocke.service.PKMCapturadoService;
 import NuzlockeApp.GerenciadorNuzlocke.service.ParLinkService;
@@ -13,11 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.HashSet; // Garanta que estes imports existam
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors; // Adicione este import
-import java.util.Set; // Adicione este import
+import java.util.stream.Collectors;
+import java.util.Set;
+import NuzlockeApp.GerenciadorNuzlocke.DTO.DTO;
 
 @Controller
 @RequestMapping("/runs/{runId}/pares") // A URL base será relativa a uma run
@@ -53,7 +54,7 @@ public class ParLinkViewController {
             });
         }
 
-        List<Pokemon> pokemonsDisponiveis = pokemonService.findAll().stream()
+        List<DTO> pokemonsDisponiveis = pokemonService.findAllForPicker().stream()
                 .filter(p -> p.getEvolChain() != null && !familiasJaCapturadas.contains(p.getEvolChain()))
                 .collect(Collectors.toList());
 
@@ -89,7 +90,7 @@ public class ParLinkViewController {
             model.addAttribute("runId", runId);
             model.addAttribute("run", run);
             model.addAttribute("par", par);
-            model.addAttribute("pokemons", pokemonService.findAll());
+            model.addAttribute("pokemons", pokemonService.findAllForPicker());
             return "form-par";
         }
     }
@@ -111,7 +112,7 @@ public class ParLinkViewController {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("runId", runId);
             model.addAttribute("par", parAtualizado);
-            model.addAttribute("pokemons", pokemonService.findAll());
+            model.addAttribute("pokemons", pokemonService.findAllForPicker());
             return "form-par";
         }
     }

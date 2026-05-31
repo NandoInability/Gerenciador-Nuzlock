@@ -1,5 +1,6 @@
 package NuzlockeApp.GerenciadorNuzlocke.Controller;
 
+import NuzlockeApp.GerenciadorNuzlocke.DTO.DTO;
 import NuzlockeApp.GerenciadorNuzlocke.entity.Pokemon;
 import NuzlockeApp.GerenciadorNuzlocke.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,8 @@ public class PokemonController {
 
     @GetMapping
     // 4. O método agora retorna um ResponseEntity, que "envelopa" nossa lista.
-    public ResponseEntity<List<Pokemon>> findAll() {
-        // A lógica de busca foi para o serviço. O controller apenas chama.
-        List<Pokemon> pokemons = pokemonService.findAll();
-        // Retornamos um status "200 OK" junto com a lista de pokémons.
-        return ResponseEntity.ok(pokemonService.findAll());
+    public ResponseEntity<List<DTO>> findAll() {
+        return ResponseEntity.ok(pokemonService.findAllForPicker());
     }
 
     // colocar end points aqui
